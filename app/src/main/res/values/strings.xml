@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">PassKeeper</string>
+    <string name="auth_login">Username</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_login_hint">Enter your username.</string>
+    <string name="auth_password_hint">Enter your password.</string>
+    <string name="auth_sig_up">Sign up</string>
+    <string name="auth_sig_in">Sign in</string>
+    <string name="login_with">Login with:</string>
+    <string name="login_with_vkontakte">Login with Vkontakte</string>
 </resources>
