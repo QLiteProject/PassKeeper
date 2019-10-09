@@ -6,6 +6,7 @@
     <string name="auth_password_hint">Enter your password.</string>
     <string name="auth_sig_up">Sign up</string>
     <string name="auth_sig_in">Sign in</string>
+    <string name="auth_login_process">Wait for authorization in the application.</string>
     <string name="reg_password_hint">Password</string>
     <string name="reg_login_hint">Username</string>
     <string name="reg_confirm_password_hint">Confirm password</string>

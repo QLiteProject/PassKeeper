@@ -1,7 +1,9 @@
 package com.example.passkeeper;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +23,11 @@ public class SignInForm extends AppCompatActivity {
         controller = new SignInController(this);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        controller.onBack(requestCode, resultCode, data);
+    }
+
     public void initComponents() {
         button_SignUp = findViewById(R.id.button_signUp);
         button_SignIn = findViewById(R.id.button_signIn);
@@ -36,7 +43,7 @@ public class SignInForm extends AppCompatActivity {
         button_SignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.onClickSignUp();
+                controller.onClickSignIn();
             }
         });
     }
