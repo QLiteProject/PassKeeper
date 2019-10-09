@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">PassKeeper</string>
+    <string name="auth_login">Username</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_login_hint">Enter your username.</string>
+    <string name="auth_password_hint">Enter your password.</string>
+    <string name="auth_sig_up">Sign up</string>
+    <string name="auth_sig_in">Sign in</string>
+    <string name="reg_password_hint">Password</string>
+    <string name="reg_login_hint">Username</string>
+    <string name="reg_confirm_password_hint">Confirm password</string>
+    <string name="reg_license_check_box">I agree to the license agreement</string>
+    <string name="reg_use_vk_acc_check_box">Use VK account</string>
+    <string name="login_with_vkontakte">Login with Vkontakte</string>
+    <string name="reg_create_account">Create account</string>
 </resources>
