@@ -4,25 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpForm">
+    tools:context=".SignUp.SignUpController">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingTop="80dp"
+        android:paddingTop="70dp"
         android:paddingRight="20dp"
         android:paddingBottom="30dp">
 
         <ImageView
-            android:id="@+id/imageView_SignUplogo"
+            android:id="@+id/imageView_regLogo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_lock_outline_white_36dp" />
+            android:layout_height="86dp"
+            android:contentDescription="@string/app_name"
+            android:tint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_shield_lock_outline_blcak_24dp" />
 
         <TextView
-            android:id="@+id/textView_SignUpLogo"
+            android:id="@+id/textView_regLogo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -33,60 +35,85 @@
             android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_regUsername"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            app:startIconDrawable="@drawable/ic_account_box_black_24dp">
+            android:hint="@string/reg_hint_login"
+            app:counterEnabled="true"
+            app:counterMaxLength="10"
+            app:passwordToggleEnabled="false"
+            app:startIconDrawable="@drawable/ic_account_circle_outline_black_24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/reg_login_hint" />
+                android:inputType="textPersonName"
+                android:maxLength="10" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_regPassword"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
+            android:hint="@string/reg_hint_password"
+            app:counterEnabled="true"
+            app:counterMaxLength="15"
+            app:helperTextEnabled="true"
+            app:passwordToggleEnabled="true"
             app:startIconDrawable="@drawable/ic_key_black_24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:hint="@string/reg_password_hint" />
+                android:inputType="textPassword"
+                android:maxLength="15" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_regDuplicatePassword"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="2dp"
+            android:hint="@string/reg_hint_password"
+            app:counterEnabled="true"
+            app:counterMaxLength="15"
+            app:errorEnabled="true"
+            app:helperTextEnabled="true"
+            app:passwordToggleEnabled="true"
             app:startIconDrawable="@drawable/ic_key_black_24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/reg_confirm_password_hint" />
+                android:inputType="textPassword"
+                android:maxLength="15" />
+
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView_regHelpInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@string/reg_txt_required_fields" />
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/checkBox_regLicense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:text="@string/reg_license_check_box" />
+            android:text="@string/reg_chbox_license" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/button_regCreateAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reg_create_account" />
+            android:text="@string/reg_btn_create_account" />
 
     </LinearLayout>
 </ScrollView>
