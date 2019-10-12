@@ -13,6 +13,7 @@ import com.google.android.material.textfield.TextInputLayout;
 public class SignUpView {
     private final SignUpController controller;
     private Button btn_createAccount;
+    private Button btn_Back;
     private CheckBox chBox_license;
     private TextInputLayout txtIn_username;
     private TextInputLayout txtIn_pass;
@@ -29,6 +30,7 @@ public class SignUpView {
 
     private void initComponents(View view) {
         btn_createAccount = (Button) view.findViewById(R.id.button_regCreateAccount);
+        btn_Back = (Button) view.findViewById(R.id.button_regBack);
         chBox_license = (CheckBox) view.findViewById(R.id.checkBox_regLicense);
         txtIn_username = (TextInputLayout) view.findViewById(R.id.textInputLayout_regUsername);
         txtIn_pass = (TextInputLayout) view.findViewById(R.id.textInputLayout_regPassword);
@@ -43,6 +45,12 @@ public class SignUpView {
             @Override
             public void onClick(View v) {
                 controller.onClickCreateAccount();
+            }
+        });
+        btn_Back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.onClickBack();
             }
         });
         chBox_license.setOnClickListener(new View.OnClickListener() {

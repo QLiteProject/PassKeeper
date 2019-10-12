@@ -46,6 +46,10 @@ public class SignUpController extends AppCompatActivity {
         }
     }
 
+    protected void onClickBack() {
+        finish();
+    }
+
     protected void onClickCheckboxLicense() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle(getString(R.string.license_info_agreement));
