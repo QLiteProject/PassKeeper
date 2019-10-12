@@ -11,9 +11,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingTop="70dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="30dp">
+        android:paddingTop="40dp"
+        android:paddingRight="20dp">
 
         <ImageView
             android:id="@+id/imageView_regLogo"
@@ -125,8 +124,10 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_toStartOf="@id/button_regCreateAccount"
+                android:layout_toLeftOf="@id/button_regCreateAccount"
                 android:text="@string/reg_btn_back" />
         </RelativeLayout>
 

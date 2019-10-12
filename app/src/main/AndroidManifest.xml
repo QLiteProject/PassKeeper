@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/PassKeeper">
-        <activity android:name=".SignUp.SignUpController"/>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".GenPrivateKey.GenPrivateKeyController"></activity>
+        <activity android:name=".SignUp.SignUpController" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".SignIn.SignInController">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

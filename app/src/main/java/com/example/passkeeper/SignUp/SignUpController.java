@@ -52,16 +52,16 @@ public class SignUpController extends AppCompatActivity {
 
     protected void onClickCheckboxLicense() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getString(R.string.license_info_agreement));
-        dialog.setMessage(getString(R.string.license_info_license_text));
-        dialog.setPositiveButton(getString(R.string.license_info_accept), new DialogInterface.OnClickListener() {
+        dialog.setTitle(getString(R.string.license_info_title_agreement));
+        dialog.setMessage(getString(R.string.license_info_msg_license));
+        dialog.setPositiveButton(getString(R.string.license_info_dbtn_accept), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 view.setCheckedLicense(true);
                 view.setEnabledCheckboxLicense(false);
             }
         });
-        dialog.setNegativeButton(getString(R.string.license_info_cancel), new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton(getString(R.string.license_info_dbtn_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 view.setCheckedLicense(false);
