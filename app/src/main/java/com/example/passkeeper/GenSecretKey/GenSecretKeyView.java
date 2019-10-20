@@ -1,4 +1,4 @@
-package com.example.passkeeper.GenPrivateKey;
+package com.example.passkeeper.GenSecretKey;
 
 import android.view.View;
 import android.widget.Button;
@@ -10,8 +10,8 @@ import android.widget.TextView;
 import com.example.passkeeper.R;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class GenPrivateKeyView {
-    private final GenPrivateKeyController controller;
+public class GenSecretKeyView {
+    private final GenSecretKeyController controller;
     private TextView txt_welcome;
     private RadioButton radBtn_autoGen;
     private RadioButton radBtn_enterKey;
@@ -19,10 +19,10 @@ public class GenPrivateKeyView {
     private TextInputLayout txtIn_enterKey;
     private EditText editText_autoGen;
     private EditText editText_enterKey;
-    private Button btn_Next;
+    private Button btn_createAccount;
 
 
-    public GenPrivateKeyView(View view, GenPrivateKeyController controller) {
+    public GenSecretKeyView(View view, GenSecretKeyController controller) {
         this.controller = controller;
         initComponents(view);
         initEvents();
@@ -36,7 +36,7 @@ public class GenPrivateKeyView {
         txtIn_enterKey = (TextInputLayout) view.findViewById(R.id.textInputLayout_nUserEnterKey);
         editText_autoGen = txtIn_autoGen.getEditText();
         editText_enterKey = txtIn_enterKey.getEditText();
-        btn_Next = (Button) view.findViewById(R.id.button_nUserNext);
+        btn_createAccount = (Button) view.findViewById(R.id.button_nUserCreateAccount);
     }
 
     private void initEvents() {
@@ -64,10 +64,10 @@ public class GenPrivateKeyView {
                 controller.onClickEndIconEnterKey();
             }
         });
-        btn_Next.setOnClickListener(new View.OnClickListener() {
+        btn_createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.onClickNext();
+                controller.onClickCreateAccount();
             }
         });
     }

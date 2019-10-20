@@ -1,18 +1,22 @@
 package com.example.passkeeper.SignUp;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.passkeeper.GenSecretKey.GenSecretKeyController;
 import com.example.passkeeper.R;
 import com.example.passkeeper.Utils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class SignUpController extends AppCompatActivity {
+    private final int REQUEST_CODE_GEN_SECRET_KEY = 2;
     private int minLength;
     private SignUpView view;
+    private SignUpModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,23 +24,74 @@ public class SignUpController extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up_form);
 
         view = new SignUpView(getWindow().getDecorView(), this);
-        minLength = getResources().getInteger(R.integer.min_length);
+        model = new SignUpModel();
+        minLength = getResources().getInteger(R.integer.min_length_fields);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_GEN_SECRET_KEY && data != null) {
+            switch (resultCode) {
+                case RESULT_OK:
+                    String secretKey = data.getStringExtra(getString(R.string.secret_key));
+                    model.setSecretKey(secretKey);
+                    onFinish();
+                    break;
+            }
+        }
+    }
+
+    private void onFinish() {
+//        String appPath = getString(R.string.app_folder);
+//        String databasePath = appPath + "/";
+//
+//        if (!Utils.isFileExists(appPath)) {
+//            if (!Utils.createDir(appPath)) {
+//                Utils.showMessage(this, getString(R.string.reg_error_critical));
+//                finish();
+//                return;
+//            }
+//        }
+//
+//        if (Utils.isFileExists(databasePath)) {
+//            if (!Utils.createDir(databasePath)) {
+//                Utils.showMessage(this, getString(R.string.reg_error_critical));
+//                finish();
+//                return;
+//            }
+//        }else {
+//            Utils.showMessage(this, getString(R.string.reg_error_critical));
+//            finish();
+//            return;
+//        }
+//
+//        String json = null; //TODO Необходимо сконфигурировать JSON
+//        if (!FileSecurity.encrypt(databasePath, json, model.getSecretKey())) {
+//            Utils.showMessage(this, getString(R.string.reg_error_critical));
+//            finish();
+//            return;
+//        }
+//
+//        Intent intent = new Intent();
+//        intent.putExtra(getString(R.string.username), model.getUsername());
+//        intent.putExtra(getString(R.string.password), model.getPassword());
+//        setResult(RESULT_OK, intent);
+//
+//        finish();
     }
 
     //region events
-    protected void onClickCreateAccount() {
-        String username = view.getTextUsername();
-        String pass = view.getTextPass();
+    protected void onClickNext() {
         if (checkUsername() && checkPass() && checkDuplPass()) {
             if (checkCorrectPass()) {
                 if (view.getCheckedLicense()) {
-                    Intent intent = new Intent();
-                    intent.putExtra(getString(R.string.username), username);
-                    intent.putExtra(getString(R.string.password), pass);
-                    setResult(RESULT_OK, intent);
-                    finish();
+                    Intent intent = new Intent(this, GenSecretKeyController.class);
+                    model.setUsername(view.getTextUsername());
+                    model.setPassword(view.getTextPass());
+                    startActivityForResult(intent, REQUEST_CODE_GEN_SECRET_KEY);
                 }else {
-                    Utils.showMessage(this, getString(R.string.reg_error_agreement_canceled), true);
+                    Utils.showMessage(this, getString(R.string.reg_error_agreement_canceled));
                 }
             }
         }else {
@@ -129,22 +184,22 @@ public class SignUpController extends AppCompatActivity {
     //endregion
 
     //region logic
-    protected boolean checkUsername() {
+    private boolean checkUsername() {
         String username = view.getTextUsername();
         return username != null && username.length() >= minLength;
     }
 
-    protected boolean checkPass() {
+    private boolean checkPass() {
         String password = view.getTextPass();
         return password != null && password.length() >= minLength;
     }
 
-    protected boolean checkDuplPass() {
+    private boolean checkDuplPass() {
         String confirmPassword = view.getTextDuplPass();
         return confirmPassword != null && confirmPassword.length() >= minLength;
     }
 
-    protected boolean checkCorrectPass() {
+    private boolean checkCorrectPass() {
         String password = view.getTextPass();
         String confirmPassword = view.getTextDuplPass();
         return password.equals(confirmPassword);

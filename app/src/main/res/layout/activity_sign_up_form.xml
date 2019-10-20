@@ -112,12 +112,12 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/button_regCreateAccount"
+                android:id="@+id/button_regNext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:text="@string/reg_btn_create_account" />
+                android:text="@string/reg_btn_next" />
 
             <Button
                 android:id="@+id/button_regBack"
@@ -126,8 +126,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
                 android:layout_marginRight="12dp"
-                android:layout_toStartOf="@id/button_regCreateAccount"
-                android:layout_toLeftOf="@id/button_regCreateAccount"
+                android:layout_toStartOf="@id/button_regNext"
+                android:layout_toLeftOf="@id/button_regNext"
                 android:text="@string/reg_btn_back" />
         </RelativeLayout>
 
