@@ -11,9 +11,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingTop="70dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="30dp">
+        android:paddingTop="40dp"
+        android:paddingRight="20dp">
 
         <ImageView
             android:id="@+id/imageView_regLogo"
@@ -113,20 +112,22 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/button_regCreateAccount"
+                android:id="@+id/button_regNext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:text="@string/reg_btn_create_account" />
+                android:text="@string/reg_btn_next" />
 
             <Button
                 android:id="@+id/button_regBack"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_toStartOf="@id/button_regNext"
+                android:layout_toLeftOf="@id/button_regNext"
                 android:text="@string/reg_btn_back" />
         </RelativeLayout>
 
