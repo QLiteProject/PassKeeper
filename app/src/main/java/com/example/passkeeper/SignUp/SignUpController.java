@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import com.example.passkeeper.GenSecretKey.GenSecretKeyController;
 import com.example.passkeeper.R;
-import com.example.passkeeper.Utils;
+import com.example.passkeeper.Utilities;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class SignUpController extends AppCompatActivity {
@@ -31,54 +31,30 @@ public class SignUpController extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_GEN_SECRET_KEY && data != null) {
+        if (requestCode == REQUEST_CODE_GEN_SECRET_KEY) {
             switch (resultCode) {
                 case RESULT_OK:
-                    String secretKey = data.getStringExtra(getString(R.string.secret_key));
-                    model.setSecretKey(secretKey);
-                    onFinish();
+                    if (data != null) {
+                        String secretKey = data.getStringExtra(getString(R.string.secret_key));
+                        model.setSecretKey(secretKey);
+                        onFinish();
+                    }else {
+                        Utilities.showMessage(this, getString(R.string.app_error_fatal));
+                    }
                     break;
+                case RESULT_CANCELED:
+                    finish();
             }
         }
     }
 
     private void onFinish() {
-//        String appPath = getString(R.string.app_folder);
-//        String databasePath = appPath + "/";
-//
-//        if (!Utils.isFileExists(appPath)) {
-//            if (!Utils.createDir(appPath)) {
-//                Utils.showMessage(this, getString(R.string.reg_error_critical));
-//                finish();
-//                return;
-//            }
-//        }
-//
-//        if (Utils.isFileExists(databasePath)) {
-//            if (!Utils.createDir(databasePath)) {
-//                Utils.showMessage(this, getString(R.string.reg_error_critical));
-//                finish();
-//                return;
-//            }
-//        }else {
-//            Utils.showMessage(this, getString(R.string.reg_error_critical));
-//            finish();
-//            return;
-//        }
-//
-//        String json = null; //TODO Необходимо сконфигурировать JSON
-//        if (!FileSecurity.encrypt(databasePath, json, model.getSecretKey())) {
-//            Utils.showMessage(this, getString(R.string.reg_error_critical));
-//            finish();
-//            return;
-//        }
-//
-//        Intent intent = new Intent();
-//        intent.putExtra(getString(R.string.username), model.getUsername());
-//        intent.putExtra(getString(R.string.password), model.getPassword());
-//        setResult(RESULT_OK, intent);
-//
-//        finish();
+        Intent intent = new Intent();
+        intent.putExtra(getString(R.string.username), model.getUsername());
+        intent.putExtra(getString(R.string.password), model.getPassword());
+        intent.putExtra(getString(R.string.secret_key), model.getSecretKey());
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     //region events
@@ -91,7 +67,7 @@ public class SignUpController extends AppCompatActivity {
                     model.setPassword(view.getTextPass());
                     startActivityForResult(intent, REQUEST_CODE_GEN_SECRET_KEY);
                 }else {
-                    Utils.showMessage(this, getString(R.string.reg_error_agreement_canceled));
+                    Utilities.showMessage(this, getString(R.string.reg_error_agreement_canceled));
                 }
             }
         }else {

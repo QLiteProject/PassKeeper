@@ -8,6 +8,7 @@
 
     <string name="auto_gen_tag">auto_gen</string>
     <string name="enter_key_tag">enter_key</string>
+    <string name="app_error_fatal">FATAL error. Please repeat the last steps again.</string>
 
     <integer name="min_length_fields">4</integer>
 </resources>

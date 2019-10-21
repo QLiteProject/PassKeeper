@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 import com.example.passkeeper.R;
 import com.example.passkeeper.SignUp.SignUpController;
-import com.example.passkeeper.Utils;
+import com.example.passkeeper.Utilities;
 
 public class SignInController extends AppCompatActivity {
     private final int REQUEST_CODE_SIGN_UP = 1;
@@ -46,7 +46,7 @@ public class SignInController extends AppCompatActivity {
                     String pass = data.getStringExtra(getString(R.string.password));
                     view.setTextUsername(username);
                     view.setTextPass(pass);
-                    Utils.showMessage(this, getString(R.string.auth_login_process) + "[Username=" + username + ", Password=" + pass + "]", false);
+                    Utilities.showMessage(this, getString(R.string.auth_login_process) + "[Username=" + username + ", Password=" + pass + "]", false);
                     break;
             }
         }

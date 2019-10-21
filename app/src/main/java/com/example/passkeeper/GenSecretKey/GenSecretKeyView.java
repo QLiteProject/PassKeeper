@@ -89,6 +89,14 @@ public class GenSecretKeyView {
         editText_autoGen.setEnabled(isEnabled);
     }
 
+    protected boolean isCheckedAutoGen() {
+        return radBtn_autoGen.isChecked();
+    }
+
+    protected boolean isCheckedEnterKey() {
+        return radBtn_enterKey.isChecked();
+    }
+
     protected String getEditAutoGenText() {
         return editText_autoGen.getText().toString();
     }

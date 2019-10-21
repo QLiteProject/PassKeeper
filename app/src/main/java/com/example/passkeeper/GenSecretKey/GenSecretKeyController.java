@@ -4,10 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.passkeeper.R;
-import com.example.passkeeper.Utils;
+import com.example.passkeeper.Utilities;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class GenSecretKeyController extends AppCompatActivity {
@@ -29,15 +30,31 @@ public class GenSecretKeyController extends AppCompatActivity {
         if (!isClipboard) {
             showWarningMsg();
         }else {
-
+            if (view.isCheckedAutoGen()) {
+                onFinish(view.getEditAutoGenText());
+            }else if (view.isCheckedEnterKey()) {
+                onFinish(view.getEditEnterKeyText());
+            }
         }
+    }
+
+    private void onFinish(String secret) {
+        if (secret != null && !secret.isEmpty()) {
+            Intent intent = new Intent();
+            intent.putExtra(getString(R.string.secret_key), secret);
+            setResult(RESULT_OK, intent);
+            finish();
+        }else {
+            Utilities.showMessage(this, getString(R.string.n_user_error_secret_key));
+        }
+
     }
 
     protected void onClickEndIconAutoGen() {
         String autoGenText = view.getEditAutoGenText();
         String autoGenTag = getString(R.string.auto_gen_tag);
-        Utils.clipBoard(this, autoGenTag, autoGenText);
-        Utils.showMessage(this, getString(R.string.n_user_ok_clipboard));
+        Utilities.clipBoard(this, autoGenTag, autoGenText);
+        Utilities.showMessage(this, getString(R.string.n_user_ok_clipboard));
         checkClipboard();
     }
 
@@ -45,11 +62,11 @@ public class GenSecretKeyController extends AppCompatActivity {
         String enterKeyText = view.getEditEnterKeyText();
         if (!enterKeyText.isEmpty()) {
             String enterKeyTag = getString(R.string.enter_key_tag);
-            Utils.clipBoard(this, enterKeyTag, enterKeyText);
-            Utils.showMessage(this, getString(R.string.n_user_ok_clipboard));
+            Utilities.clipBoard(this, enterKeyTag, enterKeyText);
+            Utilities.showMessage(this, getString(R.string.n_user_ok_clipboard));
             checkClipboard();
         }else {
-            Utils.showMessage(this, getString(R.string.n_user_error_clipboard));
+            Utilities.showMessage(this, getString(R.string.n_user_error_clipboard));
         }
     }
 
@@ -64,7 +81,7 @@ public class GenSecretKeyController extends AppCompatActivity {
 
     //region logic
     private void generateRandomSecretKey() {
-        String key = Utils.generateRandomHexToken(8);
+        String key = Utilities.generateRandomHexToken(8);
         view.setEditAutoGenText(key);
     }
 
@@ -82,7 +99,7 @@ public class GenSecretKeyController extends AppCompatActivity {
         dialog.setPositiveButton(getString(R.string.n_user_dbtn_next), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                Utils.showMessage(context, getString(R.string.n_user_msg_warning_continue), false);
+                Utilities.showMessage(context, getString(R.string.n_user_msg_warning_continue), false);
                 isClipboard = true;
                 onClickCreateAccount();
             }

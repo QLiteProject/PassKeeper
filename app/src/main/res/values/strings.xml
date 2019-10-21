@@ -38,5 +38,7 @@
     <string name="n_user_msg_warning_continue">We warned you…</string>
     <string name="n_user_dbtn_next">Next</string>
     <string name="n_user_dbtn_cancel">Cancel</string>
+    <string name="n_user_error_secret_key">You cannot be registered as the private key cannot be empty</string>
+
 
 </resources>
