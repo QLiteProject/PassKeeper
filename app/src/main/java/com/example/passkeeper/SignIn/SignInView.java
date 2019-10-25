@@ -8,7 +8,7 @@ import com.example.passkeeper.R;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class SignInView {
-    private final SignInController controller;
+    private final SignInListener listener;
     private Button btn_signUp;
     private Button btn_signIn;
     private TextInputLayout txtIn_username;
@@ -16,8 +16,8 @@ public class SignInView {
     private EditText editText_username;
     private EditText editText_pass;
 
-    public SignInView(View view, SignInController controller) {
-        this.controller = controller;
+    public SignInView(View view, SignInListener listener) {
+        this.listener = listener;
         initComponents(view);
         initEvents();
     }
@@ -35,13 +35,13 @@ public class SignInView {
         btn_signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.onClickSignUp();
+                listener.onClickSignUp();
             }
         });
         btn_signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.onClickSignIn();
+                listener.onClickSignIn();
             }
         });
     }
@@ -53,6 +53,14 @@ public class SignInView {
 
     protected void setTextPass(String text) {
         editText_pass.setText(text);
+    }
+
+    protected String getTextUsername() {
+        return editText_username.getText().toString();
+    }
+
+    protected String getTextPass() {
+        return editText_pass.getText().toString();
     }
     //endregion
 }

@@ -11,7 +11,7 @@ import com.example.passkeeper.R;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class GenSecretKeyView {
-    private final GenSecretKeyController controller;
+    private final GenSecretKeyListener listener;
     private TextView txt_welcome;
     private RadioButton radBtn_autoGen;
     private RadioButton radBtn_enterKey;
@@ -22,8 +22,8 @@ public class GenSecretKeyView {
     private Button btn_createAccount;
 
 
-    public GenSecretKeyView(View view, GenSecretKeyController controller) {
-        this.controller = controller;
+    public GenSecretKeyView(View view, GenSecretKeyListener listener) {
+        this.listener = listener;
         initComponents(view);
         initEvents();
     }
@@ -43,31 +43,31 @@ public class GenSecretKeyView {
         radBtn_autoGen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                controller.onChangedAutoGen(isChecked);
+                listener.onChangedAutoGen(isChecked);
             }
         });
         radBtn_enterKey.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                controller.onChangedEnterKey(isChecked);
+                listener.onChangedEnterKey(isChecked);
             }
         });
         txtIn_autoGen.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.onClickEndIconAutoGen();
+                listener.onClickEndIconAutoGen();
             }
         });
         txtIn_enterKey.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.onClickEndIconEnterKey();
+                listener.onClickEndIconEnterKey();
             }
         });
         btn_createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.onClickCreateAccount();
+                listener.onClickCreateAccount();
             }
         });
     }
@@ -87,6 +87,14 @@ public class GenSecretKeyView {
 
     protected void setEnabledEditAutoGen(boolean isEnabled) {
         editText_autoGen.setEnabled(isEnabled);
+    }
+
+    protected boolean isCheckedAutoGen() {
+        return radBtn_autoGen.isChecked();
+    }
+
+    protected boolean isCheckedEnterKey() {
+        return radBtn_enterKey.isChecked();
     }
 
     protected String getEditAutoGenText() {

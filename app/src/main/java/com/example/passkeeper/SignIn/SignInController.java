@@ -1,55 +1,93 @@
 package com.example.passkeeper.SignIn;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 
+import com.example.passkeeper.AppConstants;
 import com.example.passkeeper.R;
-import com.example.passkeeper.SignUp.SignUpController;
-import com.example.passkeeper.Utils;
+import com.example.passkeeper.UserAPI.UserCallback;
+import com.example.passkeeper.SignUp.SignUpManager;
+import com.example.passkeeper.UserAPI.UserManager;
+import com.example.passkeeper.UserAPI.UserModel;
+import com.example.passkeeper.Utilities;
 
-public class SignInController extends AppCompatActivity {
-    private final int REQUEST_CODE_SIGN_UP = 1;
+public class SignInController implements SignInListener, UserCallback {
+    private UserModel userModel;
     private SignInView view;
+    private SignInManager manager;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in_form);
-
-        view = new SignInView(getWindow().getDecorView(), this);
+    public SignInController(SignInManager manager, UserModel userModel) {
+        this.manager = manager;
+        this.userModel = userModel;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        onBack(requestCode, resultCode, data);
+    //region set/get
+    public void setView(SignInView view) {
+        this.view = view;
     }
+    //endregion
 
     //region events
-    protected void onClickSignIn() {
-
+    @Override
+    public void onClickSignIn() {
+        if (checkUsername() & checkUsername()) {
+            userModel.setUsername(view.getTextUsername());
+            userModel.setPassword(view.getTextPass());
+            UserManager.loginUser(userModel.getUsername(), userModel.getPassword());
+        }else {
+            Utilities.showMessage(manager, manager.getString(R.string.auth_error_login_process));
+        }
     }
 
-    protected void onClickSignUp() {
-        Intent intentSingUp = new Intent(this, SignUpController.class);
-        startActivityForResult(intentSingUp, REQUEST_CODE_SIGN_UP);
+    @Override
+    public void onClickSignUp() {
+        Intent intent = new Intent(manager, SignUpManager.class);
+        intent.putExtra(AppConstants.USER_DATA, userModel);
+        manager.startActivityForResult(intent, AppConstants.REQUEST_CODE_SIGN_UP);
     }
 
-    protected void onBack(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CODE_SIGN_UP && data != null) {
+    @Override
+    public void onBack(int requestCode, int resultCode, Intent data) {
+        if (requestCode == AppConstants.REQUEST_CODE_SIGN_UP && data != null) {
             switch (resultCode) {
-                case RESULT_OK:
-                    String username = data.getStringExtra(getString(R.string.username));
-                    String pass = data.getStringExtra(getString(R.string.password));
-                    view.setTextUsername(username);
-                    view.setTextPass(pass);
-                    Utils.showMessage(this, getString(R.string.auth_login_process) + "[Username=" + username + ", Password=" + pass + "]", false);
-                    break;
+                case Activity.RESULT_OK:
+                    UserModel model = (UserModel) data.getParcelableExtra(AppConstants.USER_DATA);
+                    if (model != null) {
+                        System.out.println("OK -> username=" + model.getUsername() + ", password=" + model.getPassword() + ", secret key=" + model.getSecretKey());
+                        UserManager.addUser(model.getUsername(), model.getPassword());
+                    }
             }
         }
+    }
+    //endregion
+
+    //region user callback
+    @Override
+    public void onShowFatalError() {
+        Utilities.showMessage(manager, manager.getString(R.string.app_error_fatal));
+    }
+
+    @Override
+    public void onSuccessRequest(int requestCode) {
+        System.out.println(requestCode);
+        switch (requestCode) {
+            case 200:
+                break;
+            case 300:
+                break;
+        }
+    }
+    //endregion
+
+    //region logic
+    private boolean checkUsername() {
+        String username = view.getTextUsername();
+        return username != null && username.length() >= 2;
+    }
+
+    private boolean checkPass() {
+        String password = view.getTextPass();
+        return password != null && password.length() >= 2;
     }
     //endregion
 }

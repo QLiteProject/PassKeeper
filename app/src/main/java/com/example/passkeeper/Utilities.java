@@ -9,7 +9,7 @@ import java.io.File;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
-public class Utils {
+public class Utilities {
     public static void showMessage(Context context, String text) {
         showMessage(context, text, true);
     }
