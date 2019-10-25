@@ -1,73 +1,44 @@
 package com.example.passkeeper.SignUp;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 
-import com.example.passkeeper.GenSecretKey.GenSecretKeyController;
+import com.example.passkeeper.AppConstants;
+import com.example.passkeeper.GenSecretKey.GenSecretKeyManager;
 import com.example.passkeeper.R;
+import com.example.passkeeper.UserAPI.UserModel;
 import com.example.passkeeper.Utilities;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-public class SignUpController extends AppCompatActivity {
-    private final int REQUEST_CODE_GEN_SECRET_KEY = 2;
-    private int minLength;
+public class SignUpController implements SignUpListener {
+    private UserModel userModel;
     private SignUpView view;
-    private SignUpModel model;
+    private SignUpManager manager;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up_form);
-
-        view = new SignUpView(getWindow().getDecorView(), this);
-        model = new SignUpModel();
-        minLength = getResources().getInteger(R.integer.min_length_fields);
+    public SignUpController(SignUpManager manager, UserModel userModel) {
+        this.manager = manager;
+        this.userModel = userModel;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_GEN_SECRET_KEY) {
-            switch (resultCode) {
-                case RESULT_OK:
-                    if (data != null) {
-                        String secretKey = data.getStringExtra(getString(R.string.secret_key));
-                        model.setSecretKey(secretKey);
-                        onFinish();
-                    }else {
-                        Utilities.showMessage(this, getString(R.string.app_error_fatal));
-                    }
-                    break;
-                case RESULT_CANCELED:
-                    finish();
-            }
-        }
+    //region set/get
+    public void setView(SignUpView view) {
+        this.view = view;
     }
-
-    private void onFinish() {
-        Intent intent = new Intent();
-        intent.putExtra(getString(R.string.username), model.getUsername());
-        intent.putExtra(getString(R.string.password), model.getPassword());
-        intent.putExtra(getString(R.string.secret_key), model.getSecretKey());
-        setResult(RESULT_OK, intent);
-        finish();
-    }
+    //endregion
 
     //region events
-    protected void onClickNext() {
+    public void onClickNext() {
         if (checkUsername() && checkPass() && checkDuplPass()) {
             if (checkCorrectPass()) {
                 if (view.getCheckedLicense()) {
-                    Intent intent = new Intent(this, GenSecretKeyController.class);
-                    model.setUsername(view.getTextUsername());
-                    model.setPassword(view.getTextPass());
-                    startActivityForResult(intent, REQUEST_CODE_GEN_SECRET_KEY);
+                    Intent intent = new Intent(manager, GenSecretKeyManager.class);
+                    userModel.setUsername(view.getTextUsername());
+                    userModel.setPassword(view.getTextPass());
+                    intent.putExtra(AppConstants.USERNAME, userModel.getUsername());
+                    manager.startActivityForResult(intent, AppConstants.REQUEST_CODE_GEN_SECRET_KEY);
                 }else {
-                    Utilities.showMessage(this, getString(R.string.reg_error_agreement_canceled));
+                    Utilities.showMessage(manager, manager.getString(R.string.reg_error_agreement_canceled));
                 }
             }
         }else {
@@ -77,22 +48,22 @@ public class SignUpController extends AppCompatActivity {
         }
     }
 
-    protected void onClickBack() {
-        finish();
+    public void onClickBack() {
+        manager.finish();
     }
 
-    protected void onClickCheckboxLicense() {
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getString(R.string.license_info_title_agreement));
-        dialog.setMessage(getString(R.string.license_info_msg_license));
-        dialog.setPositiveButton(getString(R.string.license_info_dbtn_accept), new DialogInterface.OnClickListener() {
+    public void onClickCheckboxLicense() {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(manager);
+        dialog.setTitle(manager.getString(R.string.license_info_title_agreement));
+        dialog.setMessage(manager.getString(R.string.license_info_msg_license));
+        dialog.setPositiveButton(manager.getString(R.string.license_info_dbtn_accept), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 view.setCheckedLicense(true);
                 view.setEnabledCheckboxLicense(false);
             }
         });
-        dialog.setNegativeButton(getString(R.string.license_info_dbtn_cancel), new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton(manager.getString(R.string.license_info_dbtn_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 view.setCheckedLicense(false);
@@ -103,8 +74,8 @@ public class SignUpController extends AppCompatActivity {
         dialog.show();
     }
 
-    protected void onChangedUsername() {
-        String errMsg = getString(R.string.reg_error_fields);
+    public void onChangedUsername() {
+        String errMsg = manager.getString(R.string.reg_error_fields);
         if (!checkUsername()) {
             view.setErrMsgUsername(errMsg);
         }else {
@@ -112,9 +83,9 @@ public class SignUpController extends AppCompatActivity {
         }
     }
 
-    protected void onChangedPass() {
-        String errMsgNonRule = getString(R.string.reg_error_fields);
-        String errMsgNonCorr = getString(R.string.reg_error_password_fields);
+    public void onChangedPass() {
+        String errMsgNonRule = manager.getString(R.string.reg_error_fields);
+        String errMsgNonCorr = manager.getString(R.string.reg_error_password_fields);
         if (!checkPass()) {
             view.setErrMsgPass(errMsgNonRule);
             if (checkDuplPass()) {
@@ -135,9 +106,9 @@ public class SignUpController extends AppCompatActivity {
         }
     }
 
-    protected void onChangedDuplPass() {
-        String errMsgNonRule = getString(R.string.reg_error_fields);
-        String errMsgNonCorr = getString(R.string.reg_error_password_fields);
+    public void onChangedDuplPass() {
+        String errMsgNonRule = manager.getString(R.string.reg_error_fields);
+        String errMsgNonCorr = manager.getString(R.string.reg_error_password_fields);
         if (!checkDuplPass()) {
             view.setErrMsgDuplPass(errMsgNonRule);
             if (checkPass()) {
@@ -157,22 +128,48 @@ public class SignUpController extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public void onBack(int requestCode, int resultCode, Intent data) {
+        if (requestCode == AppConstants.REQUEST_CODE_GEN_SECRET_KEY) {
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    if (data != null) {
+                        String secret = data.getStringExtra(AppConstants.SECRET_KEY);
+                        userModel.setSecretKey(secret);
+                        onFinish();
+                    }else {
+                        Utilities.showMessage(manager, manager.getString(R.string.app_error_fatal));
+                    }
+                    break;
+                case Activity.RESULT_CANCELED:
+                    manager.finish();
+            }
+        }
+    }
+
+    private void onFinish() {
+        Intent intent = new Intent();
+        intent.putExtra(AppConstants.USER_DATA, userModel);
+        manager.setResult(Activity.RESULT_OK, intent);
+        manager.finish();
+    }
     //endregion
 
     //region logic
     private boolean checkUsername() {
         String username = view.getTextUsername();
-        return username != null && username.length() >= minLength;
+        return username != null && username.length() >= AppConstants.MIN_LENGTH_FIELDS;
     }
 
     private boolean checkPass() {
         String password = view.getTextPass();
-        return password != null && password.length() >= minLength;
+        return password != null && password.length() >= AppConstants.MIN_LENGTH_FIELDS;
     }
 
     private boolean checkDuplPass() {
         String confirmPassword = view.getTextDuplPass();
-        return confirmPassword != null && confirmPassword.length() >= minLength;
+        return confirmPassword != null && confirmPassword.length() >= AppConstants.MIN_LENGTH_FIELDS;
     }
 
     private boolean checkCorrectPass() {
@@ -181,6 +178,4 @@ public class SignUpController extends AppCompatActivity {
         return password.equals(confirmPassword);
     }
     //endregion
-
-
 }

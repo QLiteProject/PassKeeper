@@ -11,7 +11,7 @@ import com.example.passkeeper.R;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class SignUpView {
-    private final SignUpController controller;
+    private final SignUpListener listener;
     private Button btn_next;
     private Button btn_back;
     private CheckBox chBox_license;
@@ -22,8 +22,8 @@ public class SignUpView {
     private EditText editText_pass;
     private EditText editText_duplPass;
 
-    public SignUpView(View view, SignUpController controller) {
-        this.controller = controller;
+    public SignUpView(View view, SignUpListener listener) {
+        this.listener = listener;
         initComponents(view);
         initEvents();
     }
@@ -44,19 +44,19 @@ public class SignUpView {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.onClickNext();
+                listener.onClickNext();
             }
         });
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.onClickBack();
+                listener.onClickBack();
             }
         });
         chBox_license.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.onClickCheckboxLicense();
+                listener.onClickCheckboxLicense();
             }
         });
         editText_username.addTextChangedListener(new TextWatcher() {
@@ -66,7 +66,7 @@ public class SignUpView {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                controller.onChangedUsername();
+                listener.onChangedUsername();
             }
 
             @Override
@@ -81,7 +81,7 @@ public class SignUpView {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                controller.onChangedPass();
+                listener.onChangedPass();
             }
 
             @Override
@@ -96,7 +96,7 @@ public class SignUpView {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                controller.onChangedDuplPass();
+                listener.onChangedDuplPass();
             }
 
             @Override

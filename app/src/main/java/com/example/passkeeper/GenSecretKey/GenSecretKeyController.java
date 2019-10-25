@@ -1,110 +1,113 @@
 package com.example.passkeeper.GenSecretKey;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 
+import com.example.passkeeper.AppConstants;
 import com.example.passkeeper.R;
 import com.example.passkeeper.Utilities;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-public class GenSecretKeyController extends AppCompatActivity {
+public class GenSecretKeyController implements GenSecretKeyListener {
     private boolean isClipboard = false;
+    private String secret = null;
     private GenSecretKeyView view;
+    private GenSecretKeyManager manager;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gen_secret_key_form);
-
-        view = new GenSecretKeyView(getWindow().getDecorView(), this);
-        generateRandomSecretKey();
-        generateWelcomeText();
+    public GenSecretKeyController(GenSecretKeyManager manager) {
+        this.manager = manager;
     }
 
+    //region get/set
+    public void setView(GenSecretKeyView view) {
+        this.view = view;
+    }
+    //endregion
+
     //region events
-    protected void onClickCreateAccount() {
+    @Override
+    public void onClickCreateAccount() {
         if (!isClipboard) {
             showWarningMsg();
         }else {
             if (view.isCheckedAutoGen()) {
-                onFinish(view.getEditAutoGenText());
+                secret = view.getEditAutoGenText();
+                onFinish();
             }else if (view.isCheckedEnterKey()) {
-                onFinish(view.getEditEnterKeyText());
+                secret = view.getEditEnterKeyText();
+                onFinish();
             }
         }
     }
 
-    private void onFinish(String secret) {
-        if (secret != null && !secret.isEmpty()) {
-            Intent intent = new Intent();
-            intent.putExtra(getString(R.string.secret_key), secret);
-            setResult(RESULT_OK, intent);
-            finish();
-        }else {
-            Utilities.showMessage(this, getString(R.string.n_user_error_secret_key));
-        }
-
-    }
-
-    protected void onClickEndIconAutoGen() {
+    @Override
+    public void onClickEndIconAutoGen() {
         String autoGenText = view.getEditAutoGenText();
-        String autoGenTag = getString(R.string.auto_gen_tag);
-        Utilities.clipBoard(this, autoGenTag, autoGenText);
-        Utilities.showMessage(this, getString(R.string.n_user_ok_clipboard));
+        Utilities.clipBoard(manager, AppConstants.AUTO_GEN_TAG, autoGenText);
+        Utilities.showMessage(manager, manager.getString(R.string.n_user_ok_clipboard));
         checkClipboard();
     }
 
-    protected void onClickEndIconEnterKey() {
+    @Override
+    public void onClickEndIconEnterKey() {
         String enterKeyText = view.getEditEnterKeyText();
         if (!enterKeyText.isEmpty()) {
-            String enterKeyTag = getString(R.string.enter_key_tag);
-            Utilities.clipBoard(this, enterKeyTag, enterKeyText);
-            Utilities.showMessage(this, getString(R.string.n_user_ok_clipboard));
+            Utilities.clipBoard(manager, AppConstants.ENTER_KEY_TAG, enterKeyText);
+            Utilities.showMessage(manager, manager.getString(R.string.n_user_ok_clipboard));
             checkClipboard();
         }else {
-            Utilities.showMessage(this, getString(R.string.n_user_error_clipboard));
+            Utilities.showMessage(manager, manager.getString(R.string.n_user_error_clipboard));
         }
     }
 
-    protected void onChangedAutoGen(boolean isChecked) {
+    @Override
+    public void onChangedAutoGen(boolean isChecked) {
+        view.setEnabledEditAutoGen(!isChecked);
+    }
+
+    @Override
+    public void onChangedEnterKey(boolean isChecked) {
         view.setEnabledEditEnterKey(!isChecked);
     }
 
-    protected void onChangedEnterKey(boolean isChecked) {
-        view.setEnabledEditAutoGen(!isChecked);
+    private void onFinish() {
+        if (secret != null && !secret.isEmpty()) {
+            Intent intent = new Intent();
+            intent.putExtra(AppConstants.SECRET_KEY, secret);
+            manager.setResult(Activity.RESULT_OK, intent);
+            manager.finish();
+        }else {
+            Utilities.showMessage(manager, manager.getString(R.string.n_user_error_secret_key));
+        }
     }
     //endregion
 
     //region logic
-    private void generateRandomSecretKey() {
-        String key = Utilities.generateRandomHexToken(8);
+    public void generateRandomSecretKey() {
+        String key = Utilities.generateRandomHexToken(AppConstants.SECRET_BYTE);
         view.setEditAutoGenText(key);
     }
 
-    private void generateWelcomeText() {
-        String username = "username";
-        String text = getString(R.string.n_user_welcome) + " " + username + "!";
+    public void generateWelcomeText() {
+        String username = manager.getIntent().getStringExtra(AppConstants.USERNAME);
+        String text = manager.getString(R.string.n_user_welcome) + " " + username + "!";
         view.setWelcomeText(text);
     }
 
     private void showWarningMsg() {
-        final Context context = this;
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getString(R.string.n_user_title_warning));
-        dialog.setMessage(getString(R.string.n_user_msg_warning));
-        dialog.setPositiveButton(getString(R.string.n_user_dbtn_next), new DialogInterface.OnClickListener() {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(manager);
+        dialog.setTitle(manager.getString(R.string.n_user_title_warning));
+        dialog.setMessage(manager.getString(R.string.n_user_msg_warning));
+        dialog.setPositiveButton(manager.getString(R.string.n_user_dbtn_next), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                Utilities.showMessage(context, getString(R.string.n_user_msg_warning_continue), false);
+                Utilities.showMessage(manager, manager.getString(R.string.n_user_msg_warning_continue), false);
                 isClipboard = true;
                 onClickCreateAccount();
             }
         });
-        dialog.setNegativeButton(getString(R.string.n_user_dbtn_cancel), null);
+        dialog.setNegativeButton(manager.getString(R.string.n_user_dbtn_cancel), null);
         dialog.setCancelable(false);
         dialog.show();
     }
@@ -115,5 +118,4 @@ public class GenSecretKeyController extends AppCompatActivity {
         }
     }
     //endregion
-
 }

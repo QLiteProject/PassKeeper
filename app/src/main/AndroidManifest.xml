@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.passkeeper">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,10 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/PassKeeper">
-        <activity android:name=".GenSecretKey.GenSecretKeyController"></activity>
-        <activity android:name=".SignUp.SignUpController" />
+        <activity android:name=".GenSecretKey.GenSecretKeyManager"></activity>
+        <activity android:name=".SignUp.SignUpManager" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".SignIn.SignInController">
+        <activity android:name=".SignIn.SignInManager">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
