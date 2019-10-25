@@ -3,13 +3,13 @@ package com.example.passkeeper.SignIn;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.example.passkeeper.AppConstants;
+import com.example.passkeeper.Application.AppConstants;
 import com.example.passkeeper.R;
 import com.example.passkeeper.UserAPI.UserCallback;
 import com.example.passkeeper.SignUp.SignUpManager;
 import com.example.passkeeper.UserAPI.UserManager;
 import com.example.passkeeper.UserAPI.UserModel;
-import com.example.passkeeper.Utilities;
+import com.example.passkeeper.Application.Utilities;
 
 public class SignInController implements SignInListener, UserCallback {
     private UserModel userModel;

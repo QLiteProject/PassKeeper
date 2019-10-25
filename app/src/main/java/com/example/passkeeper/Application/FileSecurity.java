@@ -1,4 +1,4 @@
-package com.example.passkeeper;
+package com.example.passkeeper.Application;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

@@ -1,4 +1,4 @@
-package com.example.passkeeper;
+package com.example.passkeeper.Application;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;

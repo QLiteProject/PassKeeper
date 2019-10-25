@@ -1,4 +1,4 @@
-package com.example.passkeeper;
+package com.example.passkeeper.Application;
 
 public class AppConstants {
     public static final String URL_SERVER = "http://passkeeper.duckdns.org";

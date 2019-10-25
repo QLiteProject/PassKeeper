@@ -1,6 +1,6 @@
 package com.example.passkeeper.UserAPI;
 
-import com.example.passkeeper.AppConstants;
+import com.example.passkeeper.Application.AppConstants;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 

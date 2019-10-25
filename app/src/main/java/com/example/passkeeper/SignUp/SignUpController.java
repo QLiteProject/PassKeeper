@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 
-import com.example.passkeeper.AppConstants;
+import com.example.passkeeper.Application.AppConstants;
 import com.example.passkeeper.GenSecretKey.GenSecretKeyManager;
 import com.example.passkeeper.R;
 import com.example.passkeeper.UserAPI.UserModel;
-import com.example.passkeeper.Utilities;
+import com.example.passkeeper.Application.Utilities;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class SignUpController implements SignUpListener {

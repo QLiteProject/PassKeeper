@@ -19,7 +19,7 @@ public class GenSecretKeyView {
     private TextInputLayout txtIn_enterKey;
     private EditText editText_autoGen;
     private EditText editText_enterKey;
-    private Button btn_createAccount;
+    private Button btn_finish;
 
 
     public GenSecretKeyView(View view, GenSecretKeyListener listener) {
@@ -36,7 +36,7 @@ public class GenSecretKeyView {
         txtIn_enterKey = (TextInputLayout) view.findViewById(R.id.textInputLayout_nUserEnterKey);
         editText_autoGen = txtIn_autoGen.getEditText();
         editText_enterKey = txtIn_enterKey.getEditText();
-        btn_createAccount = (Button) view.findViewById(R.id.button_nUserCreateAccount);
+        btn_finish = (Button) view.findViewById(R.id.button_nUserFinish);
     }
 
     private void initEvents() {
@@ -64,7 +64,7 @@ public class GenSecretKeyView {
                 listener.onClickEndIconEnterKey();
             }
         });
-        btn_createAccount.setOnClickListener(new View.OnClickListener() {
+        btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClickCreateAccount();
