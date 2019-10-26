@@ -129,8 +129,7 @@ public class SignUpController implements SignUpListener {
         }
     }
 
-    @Override
-    public void onBack(int requestCode, int resultCode, Intent data) {
+    protected void onBack(int requestCode, int resultCode, Intent data) {
         if (requestCode == AppConstants.REQUEST_CODE_GEN_SECRET_KEY) {
             switch (resultCode) {
                 case Activity.RESULT_OK:

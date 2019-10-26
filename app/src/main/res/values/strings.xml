@@ -9,6 +9,7 @@
     <string name="auth_btn_sig_in">Sign in</string>
     <string name="auth_login_process">Wait for authorization in the application</string>
     <string name="auth_error_login_process">All existing fields must be filled in for authorization</string>
+    <string name="auth_error_request_421">Authorization error. Incorrect login or password was entered</string>
 
     <string name="reg_hint_password">Password *</string>
     <string name="reg_hint_login">Username *</string>
@@ -44,6 +45,7 @@
     <string name="l_user_welcome">Welcome</string>
     <string name="l_user_text">You must enter your private key to continue.\n** Reminder: the key was given to you at registration.</string>
     <string name="l_user_btn_next">Next</string>
+    <string name="l_user_error_secret_key">Error, you can not continue without the entered secret key</string>
 
     <string name="app_error_fatal">FATAL error. Please repeat the last steps again</string>
 

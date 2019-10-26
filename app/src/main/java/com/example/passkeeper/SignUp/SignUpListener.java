@@ -9,5 +9,4 @@ public interface SignUpListener {
     void onChangedUsername();
     void onChangedPass();
     void onChangedDuplPass();
-    void onBack(int requestCode, int resultCode, Intent data);
 }

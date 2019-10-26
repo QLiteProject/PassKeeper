@@ -14,4 +14,5 @@ public class AppConstants {
 
     public static final int REQUEST_CODE_SIGN_UP = 1;
     public static final int REQUEST_CODE_GEN_SECRET_KEY = 2;
+    public static final int REQUEST_CODE_ENTER_SECRET_KEY = 3;
 }

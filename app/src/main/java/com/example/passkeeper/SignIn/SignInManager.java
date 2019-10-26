@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import com.example.passkeeper.R;
 import com.example.passkeeper.UserAPI.UserManager;
-import com.example.passkeeper.UserAPI.UserModel;
 
 public class SignInManager extends AppCompatActivity {
     private SignInController controller;
@@ -17,8 +16,7 @@ public class SignInManager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in_form);
 
-        UserModel userModel = new UserModel();
-        controller = new SignInController(this, userModel);
+        controller = new SignInController(this);
         SignInView view = new SignInView(getWindow().getDecorView(), controller);
         controller.setView(view);
         UserManager.callback = controller;
