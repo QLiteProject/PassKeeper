@@ -63,12 +63,12 @@ public class GenSecretKeyController implements GenSecretKeyListener {
 
     @Override
     public void onChangedAutoGen(boolean isChecked) {
-        view.setEnabledEditAutoGen(!isChecked);
+        view.setEnabledEditAutoGen(isChecked);
     }
 
     @Override
     public void onChangedEnterKey(boolean isChecked) {
-        view.setEnabledEditEnterKey(!isChecked);
+        view.setEnabledEditEnterKey(isChecked);
     }
 
     private void onFinish() {

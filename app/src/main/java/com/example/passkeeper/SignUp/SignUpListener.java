@@ -1,7 +1,5 @@
 package com.example.passkeeper.SignUp;
 
-import android.content.Intent;
-
 public interface SignUpListener {
     void onClickNext();
     void onClickBack();

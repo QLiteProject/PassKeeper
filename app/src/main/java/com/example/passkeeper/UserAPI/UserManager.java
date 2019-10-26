@@ -68,8 +68,8 @@ public class UserManager {
             client.post(null, url, entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    callback.onSuccessRequest(event);
-                    System.out.println("onSuccess -> statusCode: " + statusCode + " | event: " + event + " | " + Arrays.toString(responseBody));
+                    callback.onSuccessRequest(event, responseBody);
+                    System.out.println("onSuccess -> statusCode: " + statusCode + " | event: " + event + " | " + new String(responseBody));
                 }
 
                 @Override

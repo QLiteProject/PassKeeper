@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import com.example.passkeeper.Application.AES;
 import com.example.passkeeper.Application.AppConstants;
+import com.example.passkeeper.EnterSecretKey.EnterSecretKeyManager;
 import com.example.passkeeper.Main.MainManager;
 import com.example.passkeeper.R;
 import com.example.passkeeper.UserAPI.UserCallback;
@@ -71,6 +72,7 @@ public class SignInController implements SignInListener, UserCallback {
         String secret = data.getStringExtra(AppConstants.SECRET_KEY);
         if (secret != null) {
             userModel.setSecretKey(secret);
+            signInProcess();
         }
     }
 
@@ -85,6 +87,12 @@ public class SignInController implements SignInListener, UserCallback {
             Utilities.showMessage(manager, manager.getString(R.string.auth_login_process));
         }
     }
+
+    private void onOK() {
+        Intent intent = new Intent(manager, MainManager.class);
+        manager.startActivity(intent);
+        manager.finish();
+    }
     //endregion
 
     //region user callback
@@ -94,72 +102,81 @@ public class SignInController implements SignInListener, UserCallback {
     }
 
     @Override
-    public void onSuccessRequest(UserManager.UserEvent userEvent) {
+    public void onSuccessRequest(UserManager.UserEvent userEvent, byte[] body) {
         switch (userEvent) {
             case REGISTRATION:
                 registrationProcess();
                 break;
             case AUTHORIZATION:
+                authorizationProcess();
                 break;
             case GET_RESOURCES:
+                getResourcesProcess(body);
                 break;
             case SET_RESOURCES:
-                setResourcesProgress();
+                setResourcesProcess();
                 break;
         }
     }
 
     @Override
     public void onFailureRequest(UserManager.UserEvent userEvent) {
-        switch (userEvent) {
-            case REGISTRATION:
-            case AUTHORIZATION:
-            case GET_RESOURCES:
-            case SET_RESOURCES:
-                Utilities.showMessage(manager, "onFailureRequest -> ERROR");
-                break;
-        }
+        Utilities.showMessage(manager, "onFailureRequest -> ERROR");
     }
     //endregion
 
     //region prepare
-    private void onOK(String uri) {
-        Intent intent = new Intent(manager, MainManager.class);
-        intent.putExtra(AppConstants.USER_BASE, uri);
-        manager.startActivity(intent);
-        manager.finish();
+    private void signInProcess() {
+        String data = getLocalBaseFile();
+        if (data != null) {
+            onOK();
+        }else {
+            UserManager.getUserBase(userModel.getUsername(), userModel.getPassword());
+        }
     }
 
-    private void setResourcesProgress() {
-        onOK(null);
+    private void getResourcesProcess(byte[] body) {
+        String data = new String(body);
+        String dataDecrypt = AES.decrypt(data, userModel.getSecretKey());
+        if (dataDecrypt != null) {
+            if (compileUserData(data) != null) {
+                onOK();
+            }else {
+                Utilities.showMessage(manager, "Error load file");
+            }
+        }else {
+            Utilities.showMessage(manager, "getResourcesProcess -> ERROR");
+        }
+    }
+
+    private void setResourcesProcess() {
+        onOK();
+    }
+
+    private void authorizationProcess() {
+        Intent intent = new Intent(manager, EnterSecretKeyManager.class);
+        intent.putExtra(AppConstants.USERNAME, userModel.getUsername());
+        manager.startActivityForResult(intent, AppConstants.REQUEST_CODE_ENTER_SECRET_KEY);
     }
 
     private void registrationProcess() {
-        String path = compileUserData();
+        String path = compileUserData(getDefaultEncryptJSON());
         if (path != null & Utilities.isFileExists(path)) {
             String body = Utilities.getFileText(path);
+            userModel.setBase(path);
             UserManager.setUserBase(userModel.getUsername(), userModel.getPassword(), body);
         }else {
             Utilities.showMessage(manager, "registrationProcess -> ERROR");
         }
     }
 
-    private String compileUserData() {
+    private String compileUserData(String data) {
         String path = AppConstants.APP_FOLDER + File.separator + Utilities.generateRandomHexToken(8);
         File file = new File(path);
         if (!file.exists()) {
-            String data = getDefaultEncryptJSON();
-            System.out.println("getDefaultEncryptJSON -> data: " + data);
             if (data != null) {
                 try {
-                    if (file.createNewFile()) {
-                        FileOutputStream fileOut = new FileOutputStream(file, false);
-                        fileOut.write(data.getBytes());
-                        fileOut.close();
-                        return path;
-                    }else {
-                        return null;
-                    }
+                   return createLocalBaseFile(file, data) ? path : null;
                 }catch (Exception ignored) {
                     return null;
                 }
@@ -167,12 +184,45 @@ public class SignInController implements SignInListener, UserCallback {
                 return null;
             }
         }else {
-            return compileUserData();
+            return compileUserData(data);
         }
     }
     //endregion
 
     //region logic
+    private boolean createLocalBaseFile(File file, String data) {
+        try {
+            if (file.createNewFile()) {
+                FileOutputStream fileOut = new FileOutputStream(file, false);
+                fileOut.write(data.getBytes());
+                fileOut.close();
+                return true;
+            }else {
+                return false;
+            }
+        }catch (Exception e) {
+            return false;
+        }
+
+    }
+
+    private String getLocalBaseFile() {
+        File appFolder = new File(AppConstants.APP_FOLDER);
+        File [] files = appFolder.listFiles();
+        if (appFolder.exists() & files != null) {
+            for (File file : files) {
+                String data = Utilities.getFileText(file.getPath());
+                String dataDecrypt = AES.decrypt(data, userModel.getSecretKey());
+                if (dataDecrypt != null) {
+                    return dataDecrypt;
+                }
+            }
+            return null;
+        }else {
+            return null;
+        }
+    }
+
     private String getDefaultEncryptJSON() {
         try {
             JSONObject jsonObject = new JSONObject();
