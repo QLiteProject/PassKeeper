@@ -2,14 +2,20 @@ package com.example.passkeeper.SignIn;
 
 import android.content.Intent;
 
+import com.example.passkeeper.Application.AES;
 import com.example.passkeeper.Application.AppConstants;
-import com.example.passkeeper.EnterSecretKey.EnterSecretKeyManager;
+import com.example.passkeeper.Main.MainManager;
 import com.example.passkeeper.R;
 import com.example.passkeeper.UserAPI.UserCallback;
 import com.example.passkeeper.SignUp.SignUpManager;
 import com.example.passkeeper.UserAPI.UserManager;
 import com.example.passkeeper.UserAPI.UserModel;
 import com.example.passkeeper.Application.Utilities;
+
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class SignInController implements SignInListener, UserCallback {
     private UserModel userModel;
@@ -42,6 +48,7 @@ public class SignInController implements SignInListener, UserCallback {
 
     @Override
     public void onClickSignUp() {
+        userModel = new UserModel();
         Intent intent = new Intent(manager, SignUpManager.class);
         intent.putExtra(AppConstants.USER_DATA, userModel);
         manager.startActivityForResult(intent, AppConstants.REQUEST_CODE_SIGN_UP);
@@ -64,7 +71,6 @@ public class SignInController implements SignInListener, UserCallback {
         String secret = data.getStringExtra(AppConstants.SECRET_KEY);
         if (secret != null) {
             userModel.setSecretKey(secret);
-            decryptionBase();
         }
     }
 
@@ -73,6 +79,8 @@ public class SignInController implements SignInListener, UserCallback {
         if (model != null) {
             System.out.println("OK -> username=" + model.getUsername() + ", password=" + model.getPassword() + ", secret key=" + model.getSecretKey());
             userModel.setSecretKey(model.getSecretKey());
+            userModel.setUsername(model.getUsername());
+            userModel.setPassword(model.getPassword());
             UserManager.addUser(model.getUsername(), model.getPassword());
             Utilities.showMessage(manager, manager.getString(R.string.auth_login_process));
         }
@@ -86,39 +94,102 @@ public class SignInController implements SignInListener, UserCallback {
     }
 
     @Override
-    public void onSuccessRequest(int requestCode) {
-        System.out.println("Request -> code : " + requestCode);
-        switch (requestCode) {
-            case 200:
-                prepareContent();
+    public void onSuccessRequest(UserManager.UserEvent userEvent) {
+        switch (userEvent) {
+            case REGISTRATION:
+                registrationProcess();
                 break;
-            case 421:
-                System.out.println("ERROR -> request : 421 -> username=" + userModel.getUsername() + ", password=" + userModel.getPassword() + ", secret key=" + userModel.getSecretKey());
-                userModel = new UserModel();
-                Utilities.showMessage(manager, manager.getString(R.string.auth_error_request_421));
+            case AUTHORIZATION:
+                break;
+            case GET_RESOURCES:
+                break;
+            case SET_RESOURCES:
+                setResourcesProgress();
+                break;
+        }
+    }
+
+    @Override
+    public void onFailureRequest(UserManager.UserEvent userEvent) {
+        switch (userEvent) {
+            case REGISTRATION:
+            case AUTHORIZATION:
+            case GET_RESOURCES:
+            case SET_RESOURCES:
+                Utilities.showMessage(manager, "onFailureRequest -> ERROR");
                 break;
         }
     }
     //endregion
 
     //region prepare
-    private void prepareContent() {
-        if (userModel.getSecretKey() == null) {
-            Intent intent = new Intent(manager, EnterSecretKeyManager.class);
-            intent.putExtra(AppConstants.USERNAME, userModel.getUsername());
-            manager.startActivityForResult(intent, AppConstants.REQUEST_CODE_ENTER_SECRET_KEY);
+    private void onOK(String uri) {
+        Intent intent = new Intent(manager, MainManager.class);
+        intent.putExtra(AppConstants.USER_BASE, uri);
+        manager.startActivity(intent);
+        manager.finish();
+    }
+
+    private void setResourcesProgress() {
+        onOK(null);
+    }
+
+    private void registrationProcess() {
+        String path = compileUserData();
+        if (path != null & Utilities.isFileExists(path)) {
+            String body = Utilities.getFileText(path);
+            UserManager.setUserBase(userModel.getUsername(), userModel.getPassword(), body);
         }else {
-            System.out.println("OK -> prepare content : START -> username=" + userModel.getUsername() + ", password=" + userModel.getPassword() + ", secret key=" + userModel.getSecretKey());
-            decryptionBase();
+            Utilities.showMessage(manager, "registrationProcess -> ERROR");
         }
     }
-    
-    private void decryptionBase() {
-        System.out.println("OK -> decryption base : start");
+
+    private String compileUserData() {
+        String path = AppConstants.APP_FOLDER + File.separator + Utilities.generateRandomHexToken(8);
+        File file = new File(path);
+        if (!file.exists()) {
+            String data = getDefaultEncryptJSON();
+            System.out.println("getDefaultEncryptJSON -> data: " + data);
+            if (data != null) {
+                try {
+                    if (file.createNewFile()) {
+                        FileOutputStream fileOut = new FileOutputStream(file, false);
+                        fileOut.write(data.getBytes());
+                        fileOut.close();
+                        return path;
+                    }else {
+                        return null;
+                    }
+                }catch (Exception ignored) {
+                    return null;
+                }
+            }else{
+                return null;
+            }
+        }else {
+            return compileUserData();
+        }
     }
     //endregion
 
     //region logic
+    private String getDefaultEncryptJSON() {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("base",
+                    new JSONObject().put("create_date", Utilities.getCurrentDateTimeAsString())
+            );
+            return AES.encrypt(jsonObject.toString(), userModel.getSecretKey());
+        }catch (Exception e) {
+            Utilities.showMessage(manager, "getDefaultEncryptJSON -> ERROR");
+            return null;
+        }
+    }
+
+    public void createAppFolder() {
+        Utilities.createDir(AppConstants.APP_FOLDER);
+    }
+
     private boolean checkUsername() {
         String username = view.getTextUsername();
         return username != null && username.length() >= 2;

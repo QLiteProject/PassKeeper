@@ -3,6 +3,7 @@
     package="com.example.passkeeper">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -14,7 +15,7 @@
         <activity android:name=".EnterSecretKey.EnterSecretKeyManager"></activity>
         <activity android:name=".GenSecretKey.GenSecretKeyManager" />
         <activity android:name=".SignUp.SignUpManager" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".Main.MainManager" />
         <activity android:name=".SignIn.SignInManager">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

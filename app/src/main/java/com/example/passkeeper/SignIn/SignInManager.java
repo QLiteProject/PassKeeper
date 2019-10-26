@@ -19,6 +19,7 @@ public class SignInManager extends AppCompatActivity {
         controller = new SignInController(this);
         SignInView view = new SignInView(getWindow().getDecorView(), controller);
         controller.setView(view);
+        controller.createAppFolder();
         UserManager.callback = controller;
     }
 
