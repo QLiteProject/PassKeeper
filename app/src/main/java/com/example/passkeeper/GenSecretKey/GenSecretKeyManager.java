@@ -20,6 +20,5 @@ public class GenSecretKeyManager extends AppCompatActivity {
         controller.setView(view);
         controller.generateRandomSecretKey();
         controller.generateWelcomeText();
-        controller.generateWelcomeText();
     }
 }

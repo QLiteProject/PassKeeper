@@ -7,19 +7,22 @@ public class UserModel implements Parcelable {
     private String username;
     private String password;
     private String secretKey;
+    private String base;
 
     public UserModel() {
         this.username = null;
         this.password = null;
         this.secretKey = null;
+        this.base = null;
     }
 
     public UserModel(Parcel parcel) {
-        String[] data = new String[3];
+        String[] data = new String[4];
         parcel.readStringArray(data);
-        username = data[0];
-        password = data[1];
-        secretKey = data[2];
+        this.username = data[0];
+        this.password = data[1];
+        this.secretKey = data[2];
+        this.base = data[3];
     }
 
     public void setSecretKey(String secretKey) {
@@ -34,6 +37,10 @@ public class UserModel implements Parcelable {
         this.password = password;
     }
 
+    public void setBase(String base) {
+        this.base = base;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -46,6 +53,10 @@ public class UserModel implements Parcelable {
         return secretKey;
     }
 
+    public String getBase() {
+        return base;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -53,7 +64,7 @@ public class UserModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] {username, password, secretKey});
+        dest.writeStringArray(new String[] {username, password, secretKey, base});
     }
 
     public static final Parcelable.Creator<UserModel> CREATOR = new Parcelable.Creator<UserModel>() {
