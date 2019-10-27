@@ -21,7 +21,6 @@ public class GenSecretKeyView {
     private EditText editText_enterKey;
     private Button btn_finish;
 
-
     public GenSecretKeyView(View view, GenSecretKeyListener listener) {
         this.listener = listener;
         initComponents(view);
@@ -83,6 +82,10 @@ public class GenSecretKeyView {
 
     protected void setEnabledEditEnterKey(boolean isEnabled) {
         editText_enterKey.setEnabled(isEnabled);
+        editText_enterKey.setFocusable(isEnabled);
+        editText_enterKey.setClickable(isEnabled);
+        editText_enterKey.setCursorVisible(isEnabled);
+        editText_enterKey.setFocusableInTouchMode(isEnabled);
     }
 
     protected void setEnabledEditAutoGen(boolean isEnabled) {

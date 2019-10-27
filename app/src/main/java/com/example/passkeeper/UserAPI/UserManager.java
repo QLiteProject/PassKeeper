@@ -6,8 +6,6 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.json.JSONObject;
 
-import java.util.Arrays;
-
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
@@ -18,7 +16,6 @@ public class UserManager {
     public static void setUserBase(String username, String password, String body) {
         try {
             JSONObject jsonObject = new JSONObject().put(AppConstants.USERNAME, username).put(AppConstants.PASSWORD, password).put(AppConstants.USER_DATA, body);
-            System.out.println("setUserBase -> jsonObject: " + jsonObject);
             requestPost(UserEvent.SET_RESOURCES, jsonObject.toString());
         }catch (Exception e) {
             if (callback != null) {
@@ -69,13 +66,11 @@ public class UserManager {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     callback.onSuccessRequest(event, responseBody);
-                    System.out.println("onSuccess -> statusCode: " + statusCode + " | event: " + event + " | " + new String(responseBody));
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     callback.onFailureRequest(event);
-                    System.out.println("onFailure -> statusCode: " + statusCode + " | " + Arrays.toString(responseBody));
                 }
             });
         }catch (Exception e) {

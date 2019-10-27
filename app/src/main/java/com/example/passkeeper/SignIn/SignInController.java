@@ -139,7 +139,9 @@ public class SignInController implements SignInListener, UserCallback {
         String data = new String(body);
         String dataDecrypt = AES.decrypt(data, userModel.getSecretKey());
         if (dataDecrypt != null) {
-            if (compileUserData(data) != null) {
+            String path = compileUserData(data);
+            if (path != null) {
+                userModel.setBase(path);
                 onOK();
             }else {
                 Utilities.showMessage(manager, "Error load file");
