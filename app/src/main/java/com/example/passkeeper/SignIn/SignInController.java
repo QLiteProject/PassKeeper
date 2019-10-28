@@ -122,7 +122,7 @@ public class SignInController implements SignInListener, UserCallback {
 
     @Override
     public void onFailureRequest(UserManager.UserEvent userEvent) {
-        Utilities.showMessage(manager, "onFailureRequest -> ERROR");
+        Utilities.showMessage(manager, manager.getString(R.string.auth_error_request));
     }
     //endregion
 
@@ -146,10 +146,10 @@ public class SignInController implements SignInListener, UserCallback {
                 userModel.setBase(path);
                 onOK();
             }else {
-                Utilities.showMessage(manager, "Error load file");
+                Utilities.showMessage(manager, manager.getString(R.string.auth_error_load_file));
             }
         }else {
-            Utilities.showMessage(manager, "getResourcesProcess -> ERROR");
+            Utilities.showMessage(manager, manager.getString(R.string.auth_error_decrypt_base));
         }
     }
 
@@ -166,11 +166,11 @@ public class SignInController implements SignInListener, UserCallback {
     private void registrationProcess() {
         String path = compileUserData(getDefaultEncryptJSON());
         if (path != null & Utilities.isFileExists(path)) {
-            String body = Utilities.getFileText(path);
             userModel.setBase(path);
+            String body = Utilities.getFileText(path);
             UserManager.setUserBase(userModel.getUsername(), userModel.getPassword(), body);
         }else {
-            Utilities.showMessage(manager, "registrationProcess -> ERROR");
+            Utilities.showMessage(manager, manager.getString(R.string.auth_error_load_file));
         }
     }
 
@@ -230,12 +230,10 @@ public class SignInController implements SignInListener, UserCallback {
     private String getDefaultEncryptJSON() {
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put(AppConstants.USER_BASE,
-                    new JSONObject().put(AppConstants.USER_BASE_CREATE_DATE, Utilities.getCurrentDateTimeAsString())
-            );
+            jsonObject.put(AppConstants.USER_BASE, null);
             return AES.encrypt(jsonObject.toString(), userModel.getSecretKey());
         }catch (Exception e) {
-            Utilities.showMessage(manager, "getDefaultEncryptJSON -> ERROR");
+            Utilities.showMessage(manager, manager.getString(R.string.auth_error_get_json_default));
             return null;
         }
     }

@@ -10,6 +10,10 @@
     <string name="auth_login_process">Wait for authorization in the application</string>
     <string name="auth_error_login_process">All existing fields must be filled in for authorization</string>
     <string name="auth_error_request_421">Authorization error. Incorrect login or password was entered</string>
+    <string name="auth_error_get_json_default">Error: unable to generate local database file</string>
+    <string name="auth_error_load_file">Error: missing local database file</string>
+    <string name="auth_error_decrypt_base">Error: database could not be decrypted</string>
+    <string name="auth_error_request">Error: an incorrect response was received from the remote server. It is possible that there is no network connection or the remote server is disconnected</string>
 
     <string name="reg_hint_password">Password *</string>
     <string name="reg_hint_login">Username *</string>
