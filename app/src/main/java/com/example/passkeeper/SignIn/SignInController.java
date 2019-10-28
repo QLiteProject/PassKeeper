@@ -90,6 +90,7 @@ public class SignInController implements SignInListener, UserCallback {
 
     private void onOK() {
         Intent intent = new Intent(manager, MainManager.class);
+        intent.putExtra(AppConstants.USER_DATA, userModel);
         manager.startActivity(intent);
         manager.finish();
     }
@@ -127,8 +128,9 @@ public class SignInController implements SignInListener, UserCallback {
 
     //region prepare
     private void signInProcess() {
-        String data = getLocalBaseFile();
-        if (data != null) {
+        String path = getLocalBaseFile();
+        if (path != null) {
+            userModel.setBase(path);
             onOK();
         }else {
             UserManager.getUserBase(userModel.getUsername(), userModel.getPassword());
@@ -216,7 +218,7 @@ public class SignInController implements SignInListener, UserCallback {
                 String data = Utilities.getFileText(file.getPath());
                 String dataDecrypt = AES.decrypt(data, userModel.getSecretKey());
                 if (dataDecrypt != null) {
-                    return dataDecrypt;
+                    return file.getPath();
                 }
             }
             return null;
@@ -228,8 +230,8 @@ public class SignInController implements SignInListener, UserCallback {
     private String getDefaultEncryptJSON() {
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("base",
-                    new JSONObject().put("create_date", Utilities.getCurrentDateTimeAsString())
+            jsonObject.put(AppConstants.USER_BASE,
+                    new JSONObject().put(AppConstants.USER_BASE_CREATE_DATE, Utilities.getCurrentDateTimeAsString())
             );
             return AES.encrypt(jsonObject.toString(), userModel.getSecretKey());
         }catch (Exception e) {

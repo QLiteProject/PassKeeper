@@ -8,7 +8,7 @@ import com.example.passkeeper.R;
 
 
 public class GenSecretKeyManager extends AppCompatActivity {
-    GenSecretKeyController controller;
+    private GenSecretKeyController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -11,6 +11,7 @@ public class AppConstants {
     public static final String SECRET_KEY = "secret_key";
     public static final String USER_DATA = "user_data";
     public static final String USER_BASE = "user_base";
+    public static final String USER_BASE_CREATE_DATE = "user_base_create_date";
     public static final String ROOT_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
     public static final String APP_FOLDER =  ROOT_PATH + File.separator + ".PassKeeper";
     public static final String AUTO_GEN_TAG = "auto_gen";

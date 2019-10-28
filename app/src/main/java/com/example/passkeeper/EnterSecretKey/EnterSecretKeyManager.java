@@ -8,7 +8,7 @@ import com.example.passkeeper.GenSecretKey.GenSecretKeyView;
 import com.example.passkeeper.R;
 
 public class EnterSecretKeyManager extends AppCompatActivity {
-    EnterSecretKeyController controller;
+    private EnterSecretKeyController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

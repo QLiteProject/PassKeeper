@@ -47,6 +47,9 @@
     <string name="l_user_btn_next">Next</string>
     <string name="l_user_error_secret_key">Error, you can not continue without the entered secret key</string>
 
+    <string name="main_hint_btn_add">Add</string>
+    <string name="main_hint_toolbar">Base create:</string>
+
     <string name="app_error_fatal">FATAL error. Please repeat the last steps again</string>
 
 
