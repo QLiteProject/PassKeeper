@@ -13,6 +13,7 @@ import com.example.passkeeper.UserAPI.UserManager;
 import com.example.passkeeper.UserAPI.UserModel;
 import com.example.passkeeper.Application.Utilities;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -229,8 +230,11 @@ public class SignInController implements SignInListener, UserCallback {
 
     private String getDefaultEncryptJSON() {
         try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put(AppConstants.USER_BASE, null);
+//            JSONObject jsonObject = new JSONObject().put(AppConstants.BASE,
+//                    new JSONObject().put(AppConstants.BASE_INDEX, 0).put(AppConstants.BASE_RECORDS, "")
+//            );
+            JSONObject jsonObject = new JSONObject().put(AppConstants.BASE_RECORDS, new JSONArray());
+            System.out.println(jsonObject);
             return AES.encrypt(jsonObject.toString(), userModel.getSecretKey());
         }catch (Exception e) {
             Utilities.showMessage(manager, manager.getString(R.string.auth_error_get_json_default));

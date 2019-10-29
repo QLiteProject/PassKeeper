@@ -10,9 +10,13 @@ public class AppConstants {
     public static final String PASSWORD = "password";
     public static final String SECRET_KEY = "secret_key";
     public static final String USER_DATA = "user_data";
-    public static final String USER_BASE = "user_base";
-    public static final String USER_BASE_CREATE_DATE = "user_base_create_date";
+    public static final String BASE = "base";
+    public static final String BASE_RECORDS = "records";
+    public static final String BASE_INDEX = "index";
     public static final String ROOT_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
+    public static final String BASE_TITLE = "title";
+    public static final String BASE_LOGIN = "login";
+    public static final String BASE_PASSWORD = "password";
     public static final String APP_FOLDER =  ROOT_PATH + File.separator + ".PassKeeper";
     public static final String AUTO_GEN_TAG = "auto_gen";
     public static final String ENTER_KEY_TAG = "enter_key";

@@ -17,11 +17,9 @@ public class MainManager extends AppCompatActivity {
         setContentView(R.layout.activity_main_form);
 
         UserModel userModel = getIntent().getParcelableExtra(AppConstants.USER_DATA);
-        controller = new MainController(this);
+        controller = new MainController(this, userModel);
         MainView view = new MainView(getWindow().getDecorView(), controller);
         controller.setView(view);
-        controller.setUserModel(userModel);
         controller.initContent();
-        controller.parseBase();
     }
 }

@@ -54,6 +54,13 @@
     <string name="main_hint_btn_add">Add</string>
     <string name="main_hint_toolbar">Base create:</string>
 
+    <string name="c_dialog_add_new_record">Adding a new record:</string>
+    <string name="c_dialog_title">Title</string>
+    <string name="c_dialog_login">Username/Login *</string>
+    <string name="c_dialog_password">Password *</string>
+    <string name="c_dialog_btn_add_record">Add</string>
+    <string name="c_dialog_btn_cancel">Cancel</string>
+
     <string name="app_error_fatal">FATAL error. Please repeat the last steps again</string>
 
 
