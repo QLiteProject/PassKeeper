@@ -17,7 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
 
 public class SignInController implements SignInListener, UserCallback {
     private UserModel userModel;
@@ -56,7 +55,7 @@ public class SignInController implements SignInListener, UserCallback {
         manager.startActivityForResult(intent, AppConstants.REQUEST_CODE_SIGN_UP);
     }
 
-    protected void onBack(int requestCode, int resultCode, Intent data) {
+    public void onBack(int requestCode, int resultCode, Intent data) {
         if (data != null) {
             switch (requestCode) {
                 case AppConstants.REQUEST_CODE_ENTER_SECRET_KEY:
@@ -80,12 +79,10 @@ public class SignInController implements SignInListener, UserCallback {
     private void onFinishSignUp(Intent data) {
         UserModel model = (UserModel) data.getParcelableExtra(AppConstants.USER_DATA);
         if (model != null) {
-            System.out.println("OK -> username=" + model.getUsername() + ", password=" + model.getPassword() + ", secret key=" + model.getSecretKey());
             userModel.setSecretKey(model.getSecretKey());
             userModel.setUsername(model.getUsername());
             userModel.setPassword(model.getPassword());
-            UserManager.addUser(model.getUsername(), model.getPassword());
-            Utilities.showMessage(manager, manager.getString(R.string.auth_login_process));
+            signUpProcess();
         }
     }
 
@@ -115,9 +112,6 @@ public class SignInController implements SignInListener, UserCallback {
             case GET_RESOURCES:
                 getResourcesProcess(body);
                 break;
-            case SET_RESOURCES:
-                setResourcesProcess();
-                break;
         }
     }
 
@@ -128,34 +122,20 @@ public class SignInController implements SignInListener, UserCallback {
     //endregion
 
     //region prepare
+    private void signUpProcess() {
+        String data = getDefaultBaseConstruction();
+        if (data != null) {
+            String dataEncrypt = AES.encrypt(data, userModel.getSecretKey());
+            UserManager.addUser(userModel.getUsername(), userModel.getPassword(), dataEncrypt);
+        }
+    }
+
     private void signInProcess() {
-        String path = getLocalBaseFile();
-        if (path != null) {
-            userModel.setBase(path);
-            onOK();
-        }else {
-            UserManager.getUserBase(userModel.getUsername(), userModel.getPassword());
-        }
+        UserManager.getUserBase(userModel.getUsername(), userModel.getPassword());
     }
 
-    private void getResourcesProcess(byte[] body) {
-        String data = new String(body);
-        String dataDecrypt = AES.decrypt(data, userModel.getSecretKey());
-        if (dataDecrypt != null) {
-            String path = compileUserData(data);
-            if (path != null) {
-                userModel.setBase(path);
-                onOK();
-            }else {
-                Utilities.showMessage(manager, manager.getString(R.string.auth_error_load_file));
-            }
-        }else {
-            Utilities.showMessage(manager, manager.getString(R.string.auth_error_decrypt_base));
-        }
-    }
-
-    private void setResourcesProcess() {
-        onOK();
+    private void registrationProcess() {
+        UserManager.getUserBase(userModel.getUsername(), userModel.getPassword());
     }
 
     private void authorizationProcess() {
@@ -164,96 +144,48 @@ public class SignInController implements SignInListener, UserCallback {
         manager.startActivityForResult(intent, AppConstants.REQUEST_CODE_ENTER_SECRET_KEY);
     }
 
-    private void registrationProcess() {
-        String path = compileUserData(getDefaultEncryptJSON());
-        if (path != null & Utilities.isFileExists(path)) {
-            userModel.setBase(path);
-            String body = Utilities.getFileText(path);
-            UserManager.setUserBase(userModel.getUsername(), userModel.getPassword(), body);
-        }else {
-            Utilities.showMessage(manager, manager.getString(R.string.auth_error_load_file));
-        }
-    }
-
-    private String compileUserData(String data) {
-        String path = AppConstants.APP_FOLDER + File.separator + Utilities.generateRandomHexToken(8);
-        File file = new File(path);
-        if (!file.exists()) {
-            if (data != null) {
-                try {
-                   return createLocalBaseFile(file, data) ? path : null;
-                }catch (Exception ignored) {
-                    return null;
+    private void getResourcesProcess(byte[] body) {
+        try {
+            JSONObject data = new JSONObject(new String(body));
+            String localPath = AppConstants.APP_FOLDER + File.separator + data.optString(AppConstants.BASE_NAME);
+            File file = new File(localPath);
+            if (file.exists()) {
+                userModel.setBase(localPath);
+                onOK();
+            }else {
+                if (Utilities.createFile(localPath, data.get(AppConstants.BASE).toString())) {
+                    userModel.setBase(localPath);
+                    onOK();
+                }else {
+                    Utilities.showMessage(manager, "Error local base");
                 }
-            }else{
-                return null;
             }
-        }else {
-            return compileUserData(data);
+        }catch (Exception ignored) {
+            Utilities.showMessage(manager, manager.getString(R.string.app_error_fatal));
         }
     }
     //endregion
 
     //region logic
-    private boolean createLocalBaseFile(File file, String data) {
-        try {
-            if (file.createNewFile()) {
-                FileOutputStream fileOut = new FileOutputStream(file, false);
-                fileOut.write(data.getBytes());
-                fileOut.close();
-                return true;
-            }else {
-                return false;
-            }
-        }catch (Exception e) {
-            return false;
-        }
-
-    }
-
-    private String getLocalBaseFile() {
-        File appFolder = new File(AppConstants.APP_FOLDER);
-        File [] files = appFolder.listFiles();
-        if (appFolder.exists() & files != null) {
-            for (File file : files) {
-                String data = Utilities.getFileText(file.getPath());
-                String dataDecrypt = AES.decrypt(data, userModel.getSecretKey());
-                if (dataDecrypt != null) {
-                    return file.getPath();
-                }
-            }
-            return null;
-        }else {
-            return null;
-        }
-    }
-
-    private String getDefaultEncryptJSON() {
-        try {
-//            JSONObject jsonObject = new JSONObject().put(AppConstants.BASE,
-//                    new JSONObject().put(AppConstants.BASE_INDEX, 0).put(AppConstants.BASE_RECORDS, "")
-//            );
-            JSONObject jsonObject = new JSONObject().put(AppConstants.BASE_RECORDS, new JSONArray());
-            System.out.println(jsonObject);
-            return AES.encrypt(jsonObject.toString(), userModel.getSecretKey());
-        }catch (Exception e) {
-            Utilities.showMessage(manager, manager.getString(R.string.auth_error_get_json_default));
-            return null;
-        }
-    }
-
     public void createAppFolder() {
         Utilities.createDir(AppConstants.APP_FOLDER);
+    }
+
+    private String getDefaultBaseConstruction() {
+        try {
+            return new JSONObject().put(
+                    AppConstants.BASE, new JSONObject()
+                            .put(AppConstants.BASE_CREATE_DATE, Utilities.getCurrentDateTimeAsString())
+                            .put(AppConstants.BASE_RECORDS, new JSONArray())
+            ).toString();
+        }catch (Exception ignored) {
+            return null;
+        }
     }
 
     private boolean checkUsername() {
         String username = view.getTextUsername();
         return username != null && username.length() >= 2;
-    }
-
-    private boolean checkPass() {
-        String password = view.getTextPass();
-        return password != null && password.length() >= 2;
     }
     //endregion
 }
