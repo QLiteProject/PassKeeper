@@ -23,6 +23,7 @@ public class MainController implements MainListener{
     private UserModel userModel;
     private MainManager manager;
     private MainView view;
+    private JSONArray records;
     private JSONObject base;
 
     public MainController(MainManager manager, UserModel userModel) {
@@ -36,14 +37,15 @@ public class MainController implements MainListener{
         String dataDecrypt = AES.decrypt(data, userModel.getSecretKey());
         if (dataDecrypt != null) {
             try {
-                this.base = new JSONObject(dataDecrypt);
+                base = new JSONObject(dataDecrypt);
+                records = base.getJSONObject(AppConstants.BASE).getJSONArray(AppConstants.BASE_RECORDS);
             }catch (Exception ignored) {
-
+                Utilities.showMessage(manager, manager.getString(R.string.app_error_fatal));
             }
         }
     }
 
-    public void initContent() {
+    public void updateContent() {
         ArrayList<CustomBoxModel> list = getRecords();
         if (list != null) {
             CustomBoxAdapter adapter = new CustomBoxAdapter(manager, list);
@@ -96,36 +98,43 @@ public class MainController implements MainListener{
                     .put(AppConstants.BASE_TITLE, title)
                     .put(AppConstants.BASE_LOGIN, login)
                     .put(AppConstants.BASE_PASSWORD, password);
-            JSONArray array = base.getJSONArray(AppConstants.BASE_RECORDS).put(record);
-            base.put(AppConstants.BASE_RECORDS, array);
-            System.out.println(base);
+            records.put(record);
+            updateContent();
+            updateResources();
         }catch (Exception ignored) {
-
+            Utilities.showMessage(manager, manager.getString(R.string.app_error_fatal));
         }
-//        try {
-//            JSONObject data = base.getJSONObject(AppConstants.BASE);
-//            int index = data.optInt(AppConstants.BASE_INDEX);
-//            int autoIncrement = index + 1;
-//            data.put(AppConstants.BASE_RECORDS,
-//                    new JSONObject().put(String.valueOf(autoIncrement), new JSONObject().put(
-//                            AppConstants.BASE_TITLE, title
-//                            ).put(
-//                            AppConstants.BASE_LOGIN, login
-//                            ).put(
-//                            AppConstants.BASE_PASSWORD, password
-//                            )
-//                    )
-//            );
-//            data.put(AppConstants.BASE_INDEX, autoIncrement);
-//            base = base.put(AppConstants.BASE, data);
-//            System.out.println(base);
-//        }catch (Exception ignored) {
-//
-//        }
+    }
+
+    private void updateResources() {
+        try {
+            base.getJSONObject(AppConstants.BASE).put(AppConstants.BASE_RECORDS, records);
+            String encrypt = AES.encrypt(base.toString(), userModel.getSecretKey());
+            if (!Utilities.writeFile(userModel.getBase(), encrypt)) {
+                Utilities.showMessage(manager, "Error write");
+            }
+        }catch (Exception ignored) {
+            Utilities.showMessage(manager, manager.getString(R.string.app_error_fatal));
+        }
     }
 
     private ArrayList<CustomBoxModel> getRecords() {
-        return null;
+        ArrayList<CustomBoxModel> model = new ArrayList<>();
+        for (int i = 0; i < records.length(); i++) {
+            try {
+                JSONObject record = records.getJSONObject(i);
+                CustomBoxModel item = new CustomBoxModel(
+                        null,
+                        record.optString(AppConstants.BASE_TITLE),
+                        record.optString(AppConstants.BASE_LOGIN),
+                        record.optString(AppConstants.BASE_PASSWORD)
+                );
+                model.add(item);
+            }catch (Exception ignored) {
+                Utilities.showMessage(manager, manager.getString(R.string.app_error_fatal));
+            }
+        }
+        return model;
     }
     //endregion
 }

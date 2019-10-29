@@ -50,25 +50,41 @@ public class Utilities {
         }
     }
 
-    public static boolean createFile(String path, String data) {
-        File file = new File(path);
-        if (!file.exists()) {
+    public static boolean isFileExists(String uri) {
+        return new File(uri).exists();
+    }
+
+    public static boolean writeFile(String uri, String data) {
+        File file = new File(uri);
+        if (file.exists()) {
             try {
-                if (file.createNewFile()) {
-                    if (data != null) {
-                        FileOutputStream fileOut = new FileOutputStream(file, false);
-                        fileOut.write(data.getBytes());
-                        fileOut.close();
-                    }
-                    return true;
-                }else {
-                    return false;
-                }
+                FileOutputStream fileOut = new FileOutputStream(file, false);
+                fileOut.write(data.getBytes());
+                fileOut.close();
+                return true;
             }catch (Exception ignored) {
                 return false;
             }
         }else {
-            return true;
+            return false;
+        }
+    }
+
+    public static boolean createFile(String uri, String data) {
+        File file = new File(uri);
+        try {
+            if (file.createNewFile()) {
+                if (data != null) {
+                    FileOutputStream fileOut = new FileOutputStream(file, false);
+                    fileOut.write(data.getBytes());
+                    fileOut.close();
+                }
+                return true;
+            }else {
+                return false;
+            }
+        }catch (Exception ignored) {
+            return false;
         }
     }
 

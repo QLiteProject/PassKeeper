@@ -148,12 +148,17 @@ public class SignInController implements SignInListener, UserCallback {
         try {
             JSONObject data = new JSONObject(new String(body));
             String localPath = AppConstants.APP_FOLDER + File.separator + data.optString(AppConstants.BASE_NAME);
+            String dataEncrypt = data.get(AppConstants.BASE).toString();
             File file = new File(localPath);
             if (file.exists()) {
-                userModel.setBase(localPath);
-                onOK();
+                if (AES.decrypt(dataEncrypt, userModel.getSecretKey()) != null) {
+                    userModel.setBase(localPath);
+                    onOK();
+                }else {
+                    Utilities.showMessage(manager, "Error decrypt!");
+                }
             }else {
-                if (Utilities.createFile(localPath, data.get(AppConstants.BASE).toString())) {
+                if (Utilities.createFile(localPath, dataEncrypt)) {
                     userModel.setBase(localPath);
                     onOK();
                 }else {

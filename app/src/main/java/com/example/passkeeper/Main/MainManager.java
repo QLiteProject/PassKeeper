@@ -20,6 +20,6 @@ public class MainManager extends AppCompatActivity {
         controller = new MainController(this, userModel);
         MainView view = new MainView(getWindow().getDecorView(), controller);
         controller.setView(view);
-        controller.initContent();
+        controller.updateContent();
     }
 }
