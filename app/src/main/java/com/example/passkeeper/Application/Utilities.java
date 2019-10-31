@@ -50,11 +50,7 @@ public class Utilities {
         }
     }
 
-    public static boolean isFileExists(String uri) {
-        return new File(uri).exists();
-    }
-
-    public static boolean writeFile(String uri, String data) {
+    public static boolean setFileText(String uri, String data) {
         File file = new File(uri);
         if (file.exists()) {
             try {
@@ -68,6 +64,10 @@ public class Utilities {
         }else {
             return false;
         }
+    }
+
+    public static boolean isFileExists(String uri) {
+        return new File(uri).exists();
     }
 
     public static boolean createFile(String uri, String data) {
@@ -88,7 +88,7 @@ public class Utilities {
         }
     }
 
-    public static File createDir(String uri) {
+    public static File createFolder(String uri) {
         File file = new File(uri);
         return file.exists() ? file : (file.mkdirs() ? file : null);
     }

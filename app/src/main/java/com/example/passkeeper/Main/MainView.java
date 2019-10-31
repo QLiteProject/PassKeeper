@@ -3,7 +3,7 @@ package com.example.passkeeper.Main;
 import android.view.View;
 import android.widget.ListView;
 
-import com.example.passkeeper.CustomBox.CustomBoxAdapter;
+import com.example.passkeeper.Main.CustomBox.CustomBoxAdapter;
 import com.example.passkeeper.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,7 +27,7 @@ public class MainView {
         floating_mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickFloatingBtn();
+                listener.onClickFloatingAdd();
             }
         });
     }

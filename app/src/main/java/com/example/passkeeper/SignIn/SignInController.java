@@ -127,6 +127,8 @@ public class SignInController implements SignInListener, UserCallback {
         if (data != null) {
             String dataEncrypt = AES.encrypt(data, userModel.getSecretKey());
             UserManager.addUser(userModel.getUsername(), userModel.getPassword(), dataEncrypt);
+        }else {
+            Utilities.showMessage(manager, manager.getString(R.string.auth_error_get_json_default));
         }
     }
 
@@ -149,20 +151,19 @@ public class SignInController implements SignInListener, UserCallback {
             JSONObject data = new JSONObject(new String(body));
             String localPath = AppConstants.APP_FOLDER + File.separator + data.optString(AppConstants.BASE_NAME);
             String dataEncrypt = data.get(AppConstants.BASE).toString();
-            File file = new File(localPath);
-            if (file.exists()) {
-                if (AES.decrypt(dataEncrypt, userModel.getSecretKey()) != null) {
-                    userModel.setBase(localPath);
-                    onOK();
-                }else {
-                    Utilities.showMessage(manager, "Error decrypt!");
-                }
+            if (userModel.getSecretKey() == null | AES.decrypt(dataEncrypt, userModel.getSecretKey()) == null) {
+                Utilities.showMessage(manager, manager.getString(R.string.auth_error_decrypt_base));
+                return;
+            }
+            if (Utilities.isFileExists(localPath)) {
+                userModel.setBase(localPath);
+                onOK();
             }else {
                 if (Utilities.createFile(localPath, dataEncrypt)) {
                     userModel.setBase(localPath);
                     onOK();
                 }else {
-                    Utilities.showMessage(manager, "Error local base");
+                    Utilities.showMessage(manager, manager.getString(R.string.auth_error_create_local_base));
                 }
             }
         }catch (Exception ignored) {
@@ -173,7 +174,7 @@ public class SignInController implements SignInListener, UserCallback {
 
     //region logic
     public void createAppFolder() {
-        Utilities.createDir(AppConstants.APP_FOLDER);
+        Utilities.createFolder(AppConstants.APP_FOLDER);
     }
 
     private String getDefaultBaseConstruction() {

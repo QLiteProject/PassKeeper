@@ -1,4 +1,4 @@
-package com.example.passkeeper.CustomBox;
+package com.example.passkeeper.Main.CustomBox;
 
 import android.view.View;
 import android.widget.ImageView;

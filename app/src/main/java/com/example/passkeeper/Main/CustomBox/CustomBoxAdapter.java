@@ -1,24 +1,28 @@
-package com.example.passkeeper.CustomBox;
+package com.example.passkeeper.Main.CustomBox;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.passkeeper.Main.RecordModel;
 import com.example.passkeeper.R;
 
 import java.util.ArrayList;
 
 public class CustomBoxAdapter extends BaseAdapter {
+    CustomBoxListener listener;
     Context context;
     LayoutInflater layoutInflater;
-    ArrayList<CustomBoxModel> objects;
+    ArrayList<RecordModel> objects;
 
-    public CustomBoxAdapter(Context context, ArrayList<CustomBoxModel> objects) {
+    public CustomBoxAdapter(Context context, ArrayList<RecordModel> objects, CustomBoxListener listener) {
         this.context = context;
         this.objects = objects;
+        this.listener = listener;
         this.layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -38,21 +42,35 @@ public class CustomBoxAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
             view = layoutInflater.inflate(R.layout.layout_custom_box, parent, false);
         }
-        CustomBoxModel model = getResource(position);
+        RecordModel model = getResource(position);
+
         ((TextView) view.findViewById(R.id.textView_cBoxTitle)).setText(model.getTitle());
         ((TextView) view.findViewById(R.id.textView_cBoxLogin)).setText(model.getLogin());
         ((TextView) view.findViewById(R.id.textView_cBoxPassword)).setText(model.getPassword());
+        ((Button) view.findViewById(R.id.button_cBoxBtnDelete)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickDelete(position);
+            }
+        });
+        ((Button) view.findViewById(R.id.button_cBoxBtnEdit)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickEdit(position);
+            }
+        });
+
         return view;
     }
 
     //region get/set
-    private CustomBoxModel getResource(int position) {
-        return ((CustomBoxModel) getItem(position));
+    private RecordModel getResource(int position) {
+        return ((RecordModel) getItem(position));
     }
     //endregion
 }
