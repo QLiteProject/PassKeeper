@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.example.passkeeper.Application.AppConstants;
 import com.example.passkeeper.R;
+import com.example.passkeeper.UserAPI.UserManager;
 import com.example.passkeeper.UserAPI.UserModel;
 
 public class MainManager extends AppCompatActivity {
@@ -21,5 +22,6 @@ public class MainManager extends AppCompatActivity {
         MainView view = new MainView(getWindow().getDecorView(), controller);
         controller.setView(view);
         controller.updateAll();
+        UserManager.callback = controller;
     }
 }

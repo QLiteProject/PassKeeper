@@ -71,8 +71,8 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
                 android:layout_weight="1"
                 android:text="@string/c_dialog_btn_delete" />
 
@@ -80,8 +80,8 @@
                 android:id="@+id/button_cBoxBtnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
                 android:layout_weight="1"
                 android:text="@string/c_dialog_btn_edit" />
         </LinearLayout>

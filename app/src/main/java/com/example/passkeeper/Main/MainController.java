@@ -12,6 +12,8 @@ import com.example.passkeeper.Main.CustomBox.CustomBoxListener;
 import com.example.passkeeper.Main.CustomDialog.CustomDialogController;
 import com.example.passkeeper.Main.CustomDialog.CustomDialogListener;
 import com.example.passkeeper.R;
+import com.example.passkeeper.UserAPI.UserCallback;
+import com.example.passkeeper.UserAPI.UserManager;
 import com.example.passkeeper.UserAPI.UserModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -20,7 +22,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MainController implements MainListener, CustomBoxListener, CustomDialogListener {
+public class MainController implements MainListener, CustomBoxListener, CustomDialogListener, UserCallback {
     private UserModel userModel;
     private MainManager manager;
     private MainView view;
@@ -54,7 +56,7 @@ public class MainController implements MainListener, CustomBoxListener, CustomDi
 
     //region events
     @Override
-    public void onClickFloatingAdd() {
+    public void onClickFloatingAddRecord() {
         DialogCallback callback = new DialogCallback() {
             @Override
             public void onClickDialogAdd(RecordModel model) {
@@ -100,6 +102,14 @@ public class MainController implements MainListener, CustomBoxListener, CustomDi
             Utilities.showMessage(manager, manager.getString(R.string.main_error_update_record));
         }
     }
+
+    @Override
+    public void onClickFloatingSynchronization() {
+        String data = Utilities.getFileText(userModel.getBase());
+        UserManager.setUserBase(userModel.getUsername(), userModel.getPassword(), data);
+        Utilities.showMessage(manager, manager.getString(R.string.main_msg_synchronized_process));
+    }
+
     //endregion
 
     //region logic
@@ -194,6 +204,23 @@ public class MainController implements MainListener, CustomBoxListener, CustomDi
             }
         });
         dialogBuilder.show();
+    }
+
+    @Override
+    public void onShowFatalError() {
+        Utilities.showMessage(manager, manager.getString(R.string.app_error_fatal));
+    }
+
+    @Override
+    public void onSuccessRequest(UserManager.UserEvent userEvent, byte[] body) {
+        if (userEvent == UserManager.UserEvent.SET_RESOURCES) {
+            Utilities.showMessage(manager, manager.getString(R.string.main_msg_ok_synchronized));
+        }
+    }
+
+    @Override
+    public void onFailureRequest(UserManager.UserEvent userEvent) {
+        Utilities.showMessage(manager, manager.getString(R.string.auth_error_request));
     }
     //endregion
 

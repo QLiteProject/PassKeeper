@@ -10,7 +10,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class MainView {
     private final MainListener listener;
     private ListView listView_cBoxList;
-    private FloatingActionButton floating_mBtn;
+    private FloatingActionButton btnAddRecord;
+    private FloatingActionButton btnSynchronization;
 
     public MainView(View view, MainListener listener) {
         this.listener = listener;
@@ -20,14 +21,21 @@ public class MainView {
 
     private void initComponents(View view) {
         listView_cBoxList = (ListView) view.findViewById(R.id.listBox_cBoxList);
-        floating_mBtn = (FloatingActionButton) view.findViewById(R.id.floating_mBtn);
+        btnAddRecord = (FloatingActionButton) view.findViewById(R.id.floating_mBtnAddRecord);
+        btnSynchronization = (FloatingActionButton) view.findViewById(R.id.floating_mBtnSynchronization);
     }
 
     private void initEvents() {
-        floating_mBtn.setOnClickListener(new View.OnClickListener() {
+        btnAddRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickFloatingAdd();
+                listener.onClickFloatingAddRecord();
+            }
+        });
+        btnSynchronization.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickFloatingSynchronization();
             }
         });
     }
