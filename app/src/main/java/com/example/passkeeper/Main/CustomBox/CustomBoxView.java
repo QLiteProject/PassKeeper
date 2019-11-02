@@ -1,7 +1,6 @@
 package com.example.passkeeper.Main.CustomBox;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.passkeeper.R;
@@ -11,7 +10,6 @@ public class CustomBoxView {
     private TextView txtView_cBoxTitle;
     private TextView txtView_cBoxLogin;
     private TextView txtView_cBoxPassword;
-    private ImageView imageView_cBoxIcon;
 
     public CustomBoxView(View view) {
         this.view = view;
@@ -22,7 +20,6 @@ public class CustomBoxView {
         txtView_cBoxTitle = (TextView) view.findViewById(R.id.textView_cBoxTitle);
         txtView_cBoxLogin = (TextView) view.findViewById(R.id.textView_cBoxLogin);
         txtView_cBoxPassword = (TextView) view.findViewById(R.id.textView_cBoxPassword);
-        imageView_cBoxIcon =(ImageView) view.findViewById(R.id.imageView_cBoxIcon);
     }
 
     //region get/set
@@ -38,10 +35,6 @@ public class CustomBoxView {
         txtView_cBoxPassword.setText(text);
     }
 
-    public void setIcon(String uri) {
-
-    }
-
     public String getTitleText() {
         return txtView_cBoxTitle.getText().toString();
     }
@@ -52,10 +45,6 @@ public class CustomBoxView {
 
     public String getPasswordText() {
         return txtView_cBoxPassword.getText().toString();
-    }
-
-    public String getIcon() {
-        return null;
     }
 
     public View getView() {

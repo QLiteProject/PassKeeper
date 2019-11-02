@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.example.passkeeper.Application.AES;
 import com.example.passkeeper.Application.AppConstants;
 import com.example.passkeeper.Application.Utilities;
@@ -67,6 +69,18 @@ public class MainController implements MainListener, CustomBoxListener, CustomDi
     }
 
     @Override
+    public void onClickOptionSynchronization() {
+        String data = Utilities.getFileText(userModel.getBase());
+        UserManager.setUserBase(userModel.getUsername(), userModel.getPassword(), data);
+        Utilities.showMessage(manager, manager.getString(R.string.main_msg_synchronized_process));
+    }
+
+    @Override
+    public void onClickOptionSettings() {
+
+    }
+
+    @Override
     public void onClickDelete(int index) {
         try {
             JSONArray list = new JSONArray();
@@ -103,13 +117,17 @@ public class MainController implements MainListener, CustomBoxListener, CustomDi
         }
     }
 
-    @Override
-    public void onClickFloatingSynchronization() {
-        String data = Utilities.getFileText(userModel.getBase());
-        UserManager.setUserBase(userModel.getUsername(), userModel.getPassword(), data);
-        Utilities.showMessage(manager, manager.getString(R.string.main_msg_synchronized_process));
-    }
 
+    public void onClickOptionMenu(int itemId) {
+        switch (itemId) {
+            case R.id.action_settings:
+                onClickOptionSettings();
+                break;
+            case R.id.action_upload:
+                onClickOptionSynchronization();
+                break;
+        }
+    }
     //endregion
 
     //region logic
@@ -122,7 +140,7 @@ public class MainController implements MainListener, CustomBoxListener, CustomDi
         ArrayList<RecordModel> objects = getRecords();
         if (objects != null) {
             CustomBoxAdapter adapter = new CustomBoxAdapter(manager, objects, this);
-            view.setAdapter(adapter);
+            view.setAdapterListView(adapter);
         }
     }
 

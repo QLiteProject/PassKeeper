@@ -1,6 +1,7 @@
 package com.example.passkeeper.SignIn;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ public class SignInManager extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        initTheme();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in_form);
 
@@ -27,4 +30,16 @@ public class SignInManager extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         controller.onBack(requestCode, resultCode, data);
     }
+
+    private void initTheme() {
+        switch (AppCompatDelegate.getDefaultNightMode()) {
+            case AppCompatDelegate.MODE_NIGHT_YES:
+                setTheme(R.style.PassKeeperDark);
+                break;
+            case AppCompatDelegate.MODE_NIGHT_NO:
+                setTheme(R.style.PassKeeperLight);
+                break;
+        }
+    }
+
 }

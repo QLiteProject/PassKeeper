@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.passkeeper.Main.RecordModel;
@@ -52,13 +52,13 @@ public class CustomBoxAdapter extends BaseAdapter {
         ((TextView) view.findViewById(R.id.textView_cBoxTitle)).setText(model.getTitle());
         ((TextView) view.findViewById(R.id.textView_cBoxLogin)).setText(model.getLogin());
         ((TextView) view.findViewById(R.id.textView_cBoxPassword)).setText(model.getPassword());
-        ((Button) view.findViewById(R.id.button_cBoxBtnDelete)).setOnClickListener(new View.OnClickListener() {
+        ((ImageButton) view.findViewById(R.id.imageButton_cBoxBtnDelete)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClickDelete(position);
             }
         });
-        ((Button) view.findViewById(R.id.button_cBoxBtnEdit)).setOnClickListener(new View.OnClickListener() {
+        ((ImageButton) view.findViewById(R.id.imageButton_cBoxBtnEdit)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClickEdit(position);
