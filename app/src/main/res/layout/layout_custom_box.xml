@@ -25,7 +25,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="start|center_vertical"
-                android:inputType="textShortMessage"
                 android:text="Title"
                 android:textSize="18sp" />
 

@@ -5,12 +5,12 @@
     <item
         android:id="@+id/action_upload"
         android:icon="@drawable/ic_cloud_upload_black_24dp"
-        android:title="@string/main_menu_hint_settings"
-        app:showAsAction="always" />
+        android:title="@string/main_menu_hint_upload"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/settings_outline"
         android:title="@string/main_menu_hint_settings"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

@@ -71,6 +71,8 @@
     <string name="c_dialog_btn_edit">Edit</string>
 
     <string name="main_menu_hint_settings">App settings</string>
+    <string name="main_menu_hint_add_record">Add record</string>
+    <string name="main_menu_hint_upload">Upload record</string>
 
     <string name="app_error_fatal">FATAL error. Please repeat the last steps again</string>
 

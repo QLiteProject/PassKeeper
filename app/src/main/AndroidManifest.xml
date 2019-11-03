@@ -16,7 +16,7 @@
         <activity android:name=".EnterSecretKey.EnterSecretKeyManager"></activity>
         <activity android:name=".GenSecretKey.GenSecretKeyManager" />
         <activity android:name=".SignUp.SignUpManager" />
-        <activity android:name=".Main.MainManager" />
+        <activity android:name=".Main.MainManager" android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".SignIn.SignInManager">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

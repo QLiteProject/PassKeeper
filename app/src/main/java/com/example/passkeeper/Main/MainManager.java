@@ -2,8 +2,6 @@ package com.example.passkeeper.Main;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,6 +12,7 @@ import com.example.passkeeper.Application.AppConstants;
 import com.example.passkeeper.R;
 import com.example.passkeeper.UserAPI.UserManager;
 import com.example.passkeeper.UserAPI.UserModel;
+import com.google.android.material.bottomappbar.BottomAppBar;
 
 public class MainManager extends AppCompatActivity {
     private MainController controller;
@@ -33,8 +32,8 @@ public class MainManager extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        BottomAppBar bottomAppBar = (BottomAppBar) findViewById(R.id.bottomAppBar);
+        setSupportActionBar(bottomAppBar);
     }
 
     @Override
