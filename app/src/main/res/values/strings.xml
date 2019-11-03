@@ -10,8 +10,9 @@
     <string name="auth_login_process">Wait for authorization in the application</string>
     <string name="auth_error_login_process">All existing fields must be filled in for authorization</string>
     <string name="auth_error_request_421">Authorization error. Incorrect login or password was entered</string>
-    <string name="auth_error_get_json_default">Error: unable to generate local database file</string>
-    <string name="auth_error_load_file">Error: missing local database file</string>
+    <string name="auth_error_create_local_base">Error: unable to generate local database file</string>
+    <string name="auth_error_get_json_default">Error: missing local database file</string>
+    <string name="auth_error_load_file">Error: unable to generate database</string>
     <string name="auth_error_decrypt_base">Error: database could not be decrypted</string>
     <string name="auth_error_request">Error: an incorrect response was received from the remote server. It is possible that there is no network connection or the remote server is disconnected</string>
 
@@ -52,7 +53,13 @@
     <string name="l_user_error_secret_key">Error, you can not continue without the entered secret key</string>
 
     <string name="main_hint_btn_add">Add</string>
-    <string name="main_hint_toolbar">Base create:</string>
+    <string name="main_error_update_local_base">Error: unable to update local database</string>
+    <string name="main_error_update_record">Error: unable to update record</string>
+    <string name="main_error_delete_record">Error: cannot delete record</string>
+    <string name="main_error_base">Critical error: could not bring user data to existing logic</string>
+    <string name="main_error_generate_list">Critical error: failed to generate list</string>
+    <string name="main_msg_ok_synchronized">User data is synchronized</string>
+    <string name="main_msg_synchronized_process">Synchronization is in progress</string>
 
     <string name="c_dialog_add_new_record">Adding a new record:</string>
     <string name="c_dialog_title">Title</string>
@@ -60,6 +67,12 @@
     <string name="c_dialog_password">Password *</string>
     <string name="c_dialog_btn_add_record">Add</string>
     <string name="c_dialog_btn_cancel">Cancel</string>
+    <string name="c_dialog_btn_delete">Delete</string>
+    <string name="c_dialog_btn_edit">Edit</string>
+
+    <string name="main_menu_hint_settings">App settings</string>
+    <string name="main_menu_hint_add_record">Add record</string>
+    <string name="main_menu_hint_upload">Upload record</string>
 
     <string name="app_error_fatal">FATAL error. Please repeat the last steps again</string>
 

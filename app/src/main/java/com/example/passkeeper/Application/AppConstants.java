@@ -11,8 +11,9 @@ public class AppConstants {
     public static final String SECRET_KEY = "secret_key";
     public static final String USER_DATA = "user_data";
     public static final String BASE = "base";
+    public static final String BASE_NAME = "name";
     public static final String BASE_RECORDS = "records";
-    public static final String BASE_INDEX = "index";
+    public static final String BASE_CREATE_DATE = "create_date";
     public static final String ROOT_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
     public static final String BASE_TITLE = "title";
     public static final String BASE_LOGIN = "login";

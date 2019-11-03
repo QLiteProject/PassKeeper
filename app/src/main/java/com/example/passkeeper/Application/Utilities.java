@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -49,12 +50,45 @@ public class Utilities {
         }
     }
 
-    public static boolean isFileExists(String uri) {
+    public static boolean setFileText(String uri, String data) {
         File file = new File(uri);
-        return file.exists();
+        if (file.exists()) {
+            try {
+                FileOutputStream fileOut = new FileOutputStream(file, false);
+                fileOut.write(data.getBytes());
+                fileOut.close();
+                return true;
+            }catch (Exception ignored) {
+                return false;
+            }
+        }else {
+            return false;
+        }
     }
 
-    public static File createDir(String uri) {
+    public static boolean isFileExists(String uri) {
+        return new File(uri).exists();
+    }
+
+    public static boolean createFile(String uri, String data) {
+        File file = new File(uri);
+        try {
+            if (file.createNewFile()) {
+                if (data != null) {
+                    FileOutputStream fileOut = new FileOutputStream(file, false);
+                    fileOut.write(data.getBytes());
+                    fileOut.close();
+                }
+                return true;
+            }else {
+                return false;
+            }
+        }catch (Exception ignored) {
+            return false;
+        }
+    }
+
+    public static File createFolder(String uri) {
         File file = new File(uri);
         return file.exists() ? file : (file.mkdirs() ? file : null);
     }

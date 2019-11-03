@@ -3,14 +3,14 @@ package com.example.passkeeper.Main;
 import android.view.View;
 import android.widget.ListView;
 
-import com.example.passkeeper.CustomBox.CustomBoxAdapter;
+import com.example.passkeeper.Main.CustomBox.CustomBoxAdapter;
 import com.example.passkeeper.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainView {
     private final MainListener listener;
     private ListView listView_cBoxList;
-    private FloatingActionButton floating_mBtn;
+    private FloatingActionButton btnAddRecord;
 
     public MainView(View view, MainListener listener) {
         this.listener = listener;
@@ -20,20 +20,20 @@ public class MainView {
 
     private void initComponents(View view) {
         listView_cBoxList = (ListView) view.findViewById(R.id.listBox_cBoxList);
-        floating_mBtn = (FloatingActionButton) view.findViewById(R.id.floating_mBtn);
+        btnAddRecord = (FloatingActionButton) view.findViewById(R.id.floating_mBtnAddRecord);
     }
 
     private void initEvents() {
-        floating_mBtn.setOnClickListener(new View.OnClickListener() {
+        btnAddRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickFloatingBtn();
+                listener.onClickFloatingAddRecord();
             }
         });
     }
 
     //region get/set
-    public void setAdapter(CustomBoxAdapter adapter) {
+    public void setAdapterListView(CustomBoxAdapter adapter) {
         listView_cBoxList.setAdapter(adapter);
     }
     //endregion

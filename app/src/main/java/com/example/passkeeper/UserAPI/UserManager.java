@@ -13,6 +13,17 @@ public class UserManager {
     private static AsyncHttpClient client = new AsyncHttpClient();
     public static UserCallback callback;
 
+    public static void getUserBase(String username, String password) {
+        try {
+            JSONObject jsonObject = new JSONObject().put(AppConstants.USERNAME, username).put(AppConstants.PASSWORD, password);
+            requestPost(UserEvent.GET_RESOURCES, jsonObject.toString());
+        }catch (Exception e) {
+            if (callback != null) {
+                callback.onShowFatalError();
+            }
+        }
+    }
+
     public static void setUserBase(String username, String password, String body) {
         try {
             JSONObject jsonObject = new JSONObject().put(AppConstants.USERNAME, username).put(AppConstants.PASSWORD, password).put(AppConstants.USER_DATA, body);
@@ -23,17 +34,6 @@ public class UserManager {
             }
         }
 
-    }
-
-    public static void getUserBase(String username, String password) {
-        try {
-            JSONObject jsonObject = new JSONObject().put(AppConstants.USERNAME, username).put(AppConstants.PASSWORD, password);
-            requestPost(UserEvent.GET_RESOURCES, jsonObject.toString());
-        }catch (Exception e) {
-            if (callback != null) {
-                callback.onShowFatalError();
-            }
-        }
     }
 
     public static void loginUser(String username, String password) {
@@ -47,9 +47,9 @@ public class UserManager {
         }
     }
 
-    public static void addUser(String username, String password) {
+    public static void addUser(String username, String password, String body) {
         try {
-            JSONObject jsonObject = new JSONObject().put(AppConstants.USERNAME, username).put(AppConstants.PASSWORD, password);
+            JSONObject jsonObject = new JSONObject().put(AppConstants.USERNAME, username).put(AppConstants.PASSWORD, password).put(AppConstants.USER_DATA, body);
             requestPost(UserEvent.REGISTRATION, jsonObject.toString());
         }catch (Exception e) {
             if (callback != null) {

@@ -4,25 +4,31 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.example.passkeeper.Application.AES;
 import com.example.passkeeper.Application.AppConstants;
 import com.example.passkeeper.Application.Utilities;
-import com.example.passkeeper.CustomBox.CustomBoxAdapter;
-import com.example.passkeeper.CustomBox.CustomBoxModel;
+import com.example.passkeeper.Main.CustomBox.CustomBoxAdapter;
+import com.example.passkeeper.Main.CustomBox.CustomBoxListener;
+import com.example.passkeeper.Main.CustomDialog.CustomDialogController;
+import com.example.passkeeper.Main.CustomDialog.CustomDialogListener;
 import com.example.passkeeper.R;
+import com.example.passkeeper.UserAPI.UserCallback;
+import com.example.passkeeper.UserAPI.UserManager;
 import com.example.passkeeper.UserAPI.UserModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MainController implements MainListener{
+public class MainController implements MainListener, CustomBoxListener, CustomDialogListener, UserCallback {
     private UserModel userModel;
     private MainManager manager;
     private MainView view;
+    private JSONArray records;
     private JSONObject base;
 
     public MainController(MainManager manager, UserModel userModel) {
@@ -36,18 +42,11 @@ public class MainController implements MainListener{
         String dataDecrypt = AES.decrypt(data, userModel.getSecretKey());
         if (dataDecrypt != null) {
             try {
-                this.base = new JSONObject(dataDecrypt);
+                base = new JSONObject(dataDecrypt);
+                records = base.getJSONObject(AppConstants.BASE).getJSONArray(AppConstants.BASE_RECORDS);
             }catch (Exception ignored) {
-
+                Utilities.showMessage(manager, manager.getString(R.string.main_error_base));
             }
-        }
-    }
-
-    public void initContent() {
-        ArrayList<CustomBoxModel> list = getRecords();
-        if (list != null) {
-            CustomBoxAdapter adapter = new CustomBoxAdapter(manager, list);
-            view.setAdapter(adapter);
         }
     }
 
@@ -59,16 +58,155 @@ public class MainController implements MainListener{
 
     //region events
     @Override
-    public void onClickFloatingBtn() {
-        LayoutInflater inflater = manager.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.layout_custom_dialog, null);
+    public void onClickFloatingAddRecord() {
+        DialogCallback callback = new DialogCallback() {
+            @Override
+            public void onClickDialogAdd(RecordModel model) {
+                updateRecord(model, null);
+            }
+        };
+        onShowDialogAdd(callback, null);
+    }
 
-        final TextInputLayout txtInTitle = (TextInputLayout) dialogView.findViewById(R.id.textIputLayout_cDialogTitle);
-        final TextInputLayout txtInLogin = (TextInputLayout) dialogView.findViewById(R.id.textIputLayout_cDialogLogin);
-        final TextInputLayout txtInPassword = (TextInputLayout) dialogView.findViewById(R.id.textIputLayout_cDialogPassword);
+    @Override
+    public void onClickOptionSynchronization() {
+        String data = Utilities.getFileText(userModel.getBase());
+        UserManager.setUserBase(userModel.getUsername(), userModel.getPassword(), data);
+        Utilities.showMessage(manager, manager.getString(R.string.main_msg_synchronized_process));
+    }
+
+    @Override
+    public void onClickOptionSettings() {
+
+    }
+
+    @Override
+    public void onClickDelete(int index) {
+        try {
+            JSONArray list = new JSONArray();
+            for (int i = 0; i < records.length(); i++) {
+                if (i != index) {
+                    list.put(records.get(i));
+                }
+            }
+            records = list;
+            updateAll();
+        }catch (Exception ignored) {
+            Utilities.showMessage(manager, manager.getString(R.string.main_error_delete_record));
+        }
+    }
+
+    @Override
+    public void onClickEdit(final int index) {
+        DialogCallback callback = new DialogCallback() {
+            @Override
+            public void onClickDialogAdd(RecordModel model) {
+                updateRecord(model, index);
+            }
+        };
+        try {
+            JSONObject record = records.getJSONObject(index);
+            RecordModel model = new RecordModel(
+                    record.optString(AppConstants.BASE_TITLE),
+                    record.optString(AppConstants.BASE_LOGIN),
+                    record.optString(AppConstants.BASE_PASSWORD)
+            );
+            onShowDialogAdd(callback, model);
+        }catch (Exception ignored) {
+            Utilities.showMessage(manager, manager.getString(R.string.main_error_update_record));
+        }
+    }
+
+
+    public void onClickOptionMenu(int itemId) {
+        switch (itemId) {
+            case R.id.action_settings:
+                onClickOptionSettings();
+                break;
+            case R.id.action_upload:
+                onClickOptionSynchronization();
+                break;
+        }
+    }
+    //endregion
+
+    //region logic
+    public void updateAll() {
+        updateContent();
+        updateResources();
+    }
+
+    private void updateContent() {
+        ArrayList<RecordModel> objects = getRecords();
+        if (objects != null) {
+            CustomBoxAdapter adapter = new CustomBoxAdapter(manager, objects, this);
+            view.setAdapterListView(adapter);
+        }
+    }
+
+    private void updateResources() {
+        try {
+            base.getJSONObject(AppConstants.BASE).put(AppConstants.BASE_RECORDS, records);
+            String encrypt = AES.encrypt(base.toString(), userModel.getSecretKey());
+            if (!Utilities.setFileText(userModel.getBase(), encrypt)) {
+                Utilities.showMessage(manager, manager.getString(R.string.main_error_update_local_base));
+            }
+        }catch (Exception ignored) {
+            Utilities.showMessage(manager, manager.getString(R.string.main_error_base));
+        }
+    }
+
+    private void updateRecord(RecordModel model, Integer index) {
+        if (model.getTitle().isEmpty() & model.getLogin().isEmpty() & model.getPassword().isEmpty()) {
+            return;
+        }
+        try {
+            JSONObject record = new JSONObject()
+                    .put(AppConstants.BASE_TITLE, model.getTitle())
+                    .put(AppConstants.BASE_LOGIN, model.getLogin())
+                    .put(AppConstants.BASE_PASSWORD, model.getPassword());
+            if (index != null) {
+                records.put(index, record);
+            }else {
+                records.put(record);
+            }
+            updateAll();
+        }catch (Exception ignored) {
+            Utilities.showMessage(manager, manager.getString(R.string.main_error_update_record));
+        }
+    }
+
+    private ArrayList<RecordModel> getRecords() {
+        ArrayList<RecordModel> model = new ArrayList<>();
+        for (int i = 0; i < records.length(); i++) {
+            try {
+                JSONObject record = records.getJSONObject(i);
+                RecordModel item = new RecordModel(
+                        record.optString(AppConstants.BASE_TITLE),
+                        record.optString(AppConstants.BASE_LOGIN),
+                        record.optString(AppConstants.BASE_PASSWORD)
+                );
+                model.add(item);
+            }catch (Exception ignored) {
+                Utilities.showMessage(manager, manager.getString(R.string.main_error_generate_list));
+            }
+        }
+        return model;
+    }
+
+    private void onShowDialogAdd(final DialogCallback listener, RecordModel model) {
+        LayoutInflater inflater = manager.getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.layout_custom_dialog, null);
+        final CustomDialogController dialogController = new CustomDialogController(dialogLayout, this);
+
+        if (model != null) {
+            dialogController.setTitle(model.getTitle());
+            dialogController.setLogin(model.getLogin());
+            dialogController.setPassword(model.getPassword());
+        }
 
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(manager);
-        dialogBuilder.setView(dialogView);
+        dialogBuilder.setView(dialogController.getView());
         dialogBuilder.setTitle(manager.getString(R.string.c_dialog_title));
         dialogBuilder.setNegativeButton(R.string.c_dialog_btn_cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -79,53 +217,34 @@ public class MainController implements MainListener{
         dialogBuilder.setPositiveButton(R.string.c_dialog_btn_add_record, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String title = txtInTitle.getEditText().getText().toString();
-                String login = txtInLogin.getEditText().getText().toString();
-                String password = txtInPassword.getEditText().getText().toString();
-                addRecord(title, login, password);
+                RecordModel model = new RecordModel(dialogController.getTitle(), dialogController.getLogin(), dialogController.getPassword());
+                listener.onClickDialogAdd(model);
             }
         });
         dialogBuilder.show();
     }
-    //endregion
 
-    //region logic
-    private void addRecord(String title, String login, String password) {
-        try {
-            JSONObject record = new JSONObject()
-                    .put(AppConstants.BASE_TITLE, title)
-                    .put(AppConstants.BASE_LOGIN, login)
-                    .put(AppConstants.BASE_PASSWORD, password);
-            JSONArray array = base.getJSONArray(AppConstants.BASE_RECORDS).put(record);
-            base.put(AppConstants.BASE_RECORDS, array);
-            System.out.println(base);
-        }catch (Exception ignored) {
-
-        }
-//        try {
-//            JSONObject data = base.getJSONObject(AppConstants.BASE);
-//            int index = data.optInt(AppConstants.BASE_INDEX);
-//            int autoIncrement = index + 1;
-//            data.put(AppConstants.BASE_RECORDS,
-//                    new JSONObject().put(String.valueOf(autoIncrement), new JSONObject().put(
-//                            AppConstants.BASE_TITLE, title
-//                            ).put(
-//                            AppConstants.BASE_LOGIN, login
-//                            ).put(
-//                            AppConstants.BASE_PASSWORD, password
-//                            )
-//                    )
-//            );
-//            data.put(AppConstants.BASE_INDEX, autoIncrement);
-//            base = base.put(AppConstants.BASE, data);
-//            System.out.println(base);
-//        }catch (Exception ignored) {
-//
-//        }
+    @Override
+    public void onShowFatalError() {
+        Utilities.showMessage(manager, manager.getString(R.string.app_error_fatal));
     }
 
-    private ArrayList<CustomBoxModel> getRecords() {
-        return null;
+    @Override
+    public void onSuccessRequest(UserManager.UserEvent userEvent, byte[] body) {
+        if (userEvent == UserManager.UserEvent.SET_RESOURCES) {
+            Utilities.showMessage(manager, manager.getString(R.string.main_msg_ok_synchronized));
+        }
+    }
+
+    @Override
+    public void onFailureRequest(UserManager.UserEvent userEvent) {
+        Utilities.showMessage(manager, manager.getString(R.string.auth_error_request));
+    }
+    //endregion
+
+    //region callback
+    interface DialogCallback {
+        void onClickDialogAdd(RecordModel model);
     }
     //endregion
 }

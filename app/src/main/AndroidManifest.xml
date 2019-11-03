@@ -12,15 +12,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/PassKeeper">
+        android:theme="@style/PassKeeperDark">
         <activity android:name=".EnterSecretKey.EnterSecretKeyManager"></activity>
         <activity android:name=".GenSecretKey.GenSecretKeyManager" />
         <activity android:name=".SignUp.SignUpManager" />
-        <activity android:name=".Main.MainManager" />
+        <activity android:name=".Main.MainManager" android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".SignIn.SignInManager">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

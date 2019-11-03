@@ -1,20 +1,14 @@
-package com.example.passkeeper.CustomBox;
+package com.example.passkeeper.Main;
 
-public class CustomBoxModel {
-    private String icon;
+public class RecordModel {
     private String title;
     private String login;
     private String password;
 
-    public CustomBoxModel(String icon, String paragraph, String login, String password) {
-        this.icon = icon;
-        this.title = paragraph;
+    public RecordModel(String title, String login, String password) {
+        this.title = title;
         this.login = login;
         this.password = password;
-    }
-
-    public String getIcon() {
-        return icon;
     }
 
     public String getTitle() {
