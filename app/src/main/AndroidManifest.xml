@@ -3,8 +3,8 @@
     package="com.example.passkeeper">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,13 +13,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/PassKeeperDark">
-        <activity android:name=".EnterSecretKey.EnterSecretKeyManager"></activity>
+        <activity android:name=".Settings.SettingsManager"></activity>
+        <activity android:name=".EnterSecretKey.EnterSecretKeyManager" />
         <activity android:name=".GenSecretKey.GenSecretKeyManager" />
         <activity android:name=".SignUp.SignUpManager" />
-        <activity android:name=".Main.MainManager" android:windowSoftInputMode="adjustNothing"/>
+        <activity
+            android:name=".Main.MainManager"
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".SignIn.SignInManager">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

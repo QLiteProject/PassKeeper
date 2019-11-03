@@ -4,5 +4,6 @@
         <attr name="colorBackground" format="color" />
         <attr name="colorPrimary" format="color" />
         <attr name="colorAccent" format="color" />
+        <attr name="colorComponentsToolbar" format="color" />
     </declare-styleable>
 </resources>
