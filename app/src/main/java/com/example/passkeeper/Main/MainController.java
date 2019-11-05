@@ -78,7 +78,7 @@ public class MainController implements MainListener, CustomBoxListener, CustomDi
     @Override
     public void onClickOptionSettings() {
         Intent intent = new Intent(manager, SettingsManager.class);
-        manager.startActivity(intent);
+        manager.startActivityForResult(intent, AppConstants.REQUEST_CODE_SETTINGS);
     }
 
     @Override

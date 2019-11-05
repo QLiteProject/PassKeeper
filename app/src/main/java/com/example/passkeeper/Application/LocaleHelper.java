@@ -7,16 +7,16 @@ import android.content.SharedPreferences;
 import java.util.Locale;
 
 public class LocaleHelper {
+    private static final String LANG_PREF = "Language";
     private static final String DEFAULT_LANG = "eu";
 
     public static void loadLocale(Context context) {
-        String langPref = "Language";
         SharedPreferences prefs = context.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
-        String language = prefs.getString(langPref, DEFAULT_LANG);
-        changeLang(language, context);
+        String language = prefs.getString(LANG_PREF, DEFAULT_LANG);
+        changeLang(context, language);
     }
 
-    public static void changeLang(String lang, Context context) {
+    public static void changeLang(Context context, String lang) {
         Locale myLocale = new Locale(lang);
         saveLocale(lang, context);
         Locale.setDefault(myLocale);
@@ -31,5 +31,10 @@ public class LocaleHelper {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(langPref, lang);
         editor.apply();
+    }
+
+    public static String getCurrentLang(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
+        return prefs.getString(LANG_PREF, DEFAULT_LANG);
     }
 }

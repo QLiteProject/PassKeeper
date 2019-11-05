@@ -30,7 +30,7 @@
     <string name="l_user_welcome">Добро пожаловать</string>
     <string name="license_info_dbtn_accept">Принять</string>
     <string name="license_info_dbtn_cancel">Отмена</string>
-    <string name="license_info_msg_license">Много текста ...</string>
+    <string name="license_info_msg_license">Программа разработана для личного использования в исследовательских целях</string>
     <string name="license_info_title_agreement">Лицензионное соглашение</string>
     <string name="main_error_base">Критическая ошибка: не удалось привести пользовательские данные к существующей логике</string>
     <string name="main_error_delete_record">Ошибка: не удается удалить запись</string>
@@ -41,7 +41,7 @@
     <string name="main_menu_hint_add_record">Добавить запись</string>
     <string name="main_menu_hint_settings">Настройки приложения</string>
     <string name="main_menu_hint_upload">Загрузка базы данных</string>
-    <string name="main_msg_ok_synchronized">Данные пользователя синхронизируются</string>
+    <string name="main_msg_ok_synchronized">Данные пользователя синхронизированны</string>
     <string name="main_msg_synchronized_process">Идет синхронизация</string>
     <string name="n_user_btn_finish">Финиш</string>
     <string name="n_user_dbtn_cancel">Отмена</string>
@@ -65,7 +65,8 @@
     <string name="reg_error_password_fields">Ошибка: пароль не совпадает</string>
     <string name="reg_hint_duplicate_password">Подтвердите пароль *</string>
     <string name="reg_hint_login">Имя пользователя *</string>
-    <string name="reg_hint_password">Пароль</string>
+    <string name="reg_hint_password">Пароль *</string>
     <string name="reg_txt_required_fields">* Обязательно для заполнения</string>
     <string name="set_language">Текущий язык приложения:</string>
+    <string name="set_enabled_dark_mode">Включить тёмную тему</string>
 </resources>

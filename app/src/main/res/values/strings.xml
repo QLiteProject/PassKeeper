@@ -25,7 +25,6 @@
     <string name="reg_error_password_fields">Error: Password does not match</string>
     <string name="reg_error_agreement_canceled">You cannot register until you accept the terms of the license agreement</string>
     <string name="reg_error_critical">A critical error has occurred, please repeat the procedure later</string>
-    <string name="license_info_msg_license">More text …</string>
     <string name="license_info_dbtn_accept">Accept</string>
     <string name="license_info_dbtn_cancel">Cancel</string>
     <string name="license_info_title_agreement">License agreement</string>
@@ -66,9 +65,11 @@
     <string name="main_menu_hint_add_record">Add record</string>
     <string name="main_menu_hint_upload">Upload record</string>
     <string name="set_language">The current language of the application:</string>
+    <string name="set_enabled_dark_mode">To enable the dark theme</string>
     <string-array name="language_option">
         <item>English</item>
         <item>Русский</item>
     </string-array>
     <string name="app_error_fatal">FATAL error. Please repeat the last steps again</string>
+    <string name="license_info_msg_license">The program is designed for personal use for research purposes</string>
 </resources>

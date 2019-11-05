@@ -2,7 +2,6 @@ package com.example.passkeeper.Settings;
 
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 
@@ -36,6 +35,18 @@ public class SettingsView {
     //region get/set
     public void setSpinnerLanguageAdapter(ArrayAdapter<String> adapter) {
         spinnerLanguage.setAdapter(adapter);
+    }
+
+    public int getSpinnerItemPosition() {
+        return spinnerLanguage.getSelectedItemPosition();
+    }
+
+    public void setSwitchChecked(boolean isChecked) {
+        switchTheme.setChecked(isChecked);
+    }
+
+    public void setSelectedItem(int position) {
+        spinnerLanguage.setSelection(position);
     }
     //endregion
 }

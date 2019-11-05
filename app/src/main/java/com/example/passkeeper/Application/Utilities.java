@@ -1,8 +1,14 @@
 package com.example.passkeeper.Application;
 
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -104,5 +110,46 @@ public class Utilities {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         return dateFormat.format(date);
+    }
+
+    public static void doRestart(Context c) {
+        try {
+            if (c != null) {
+                PackageManager pm = c.getPackageManager();
+                if (pm != null) {
+                    Intent mStartActivity = pm.getLaunchIntentForPackage(
+                            c.getPackageName()
+                    );
+                    if (mStartActivity != null) {
+                        mStartActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        int mPendingIntentId = 223344;
+                        PendingIntent mPendingIntent = PendingIntent
+                                .getActivity(c, mPendingIntentId, mStartActivity,
+                                        PendingIntent.FLAG_CANCEL_CURRENT);
+                        AlarmManager mgr = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
+                        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                        System.exit(0);
+                    } else {
+                        Log.e(AppConstants.SETTINGS_LOG_TAG, "Was not able to restart application, mStartActivity null");
+                    }
+                } else {
+                    Log.e(AppConstants.SETTINGS_LOG_TAG, "Was not able to restart application, PM null");
+                }
+            } else {
+                Log.e(AppConstants.SETTINGS_LOG_TAG, "Was not able to restart application, Context null");
+            }
+        } catch (Exception ex) {
+            Log.e(AppConstants.SETTINGS_LOG_TAG, "Was not able to restart application");
+        }
+    }
+
+
+    public static void onReload(Activity activity) {
+        Intent intent = activity.getIntent();
+        activity.overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        activity.finish();
+        activity.overridePendingTransition(0, 0);
+        activity.startActivity(intent);
     }
 }

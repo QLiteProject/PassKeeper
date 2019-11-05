@@ -7,12 +7,12 @@ import com.example.passkeeper.R;
 
 public class ThemeHelper {
     private final static String THEME_PREF = "Theme";
-    public final static int THEME_DEFAULT = 0;
+    public final static int DEFAULT_THEME = 0;
     public final static int THEME_LIGHT = 1;
 
     public static void loadTheme(Activity activity) {
         SharedPreferences prefs = activity.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
-        int theme = prefs.getInt(THEME_PREF, THEME_DEFAULT);
+        int theme = prefs.getInt(THEME_PREF, DEFAULT_THEME);
         setThemeActivity(activity, theme);
     }
 
@@ -28,10 +28,15 @@ public class ThemeHelper {
         editor.apply();
     }
 
+    public static int getCurrentTheme(Activity activity) {
+        SharedPreferences prefs = activity.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
+        return prefs.getInt(THEME_PREF, DEFAULT_THEME);
+    }
+
     private static void setThemeActivity(Activity activity, int theme) {
         switch (theme) {
             default:
-            case THEME_DEFAULT:
+            case DEFAULT_THEME:
                 activity.setTheme(R.style.PassKeeperDark);
                 break;
             case THEME_LIGHT:

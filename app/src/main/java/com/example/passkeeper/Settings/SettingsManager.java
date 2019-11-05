@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.passkeeper.Application.LocaleHelper;
 import com.example.passkeeper.Application.ThemeHelper;
 import com.example.passkeeper.R;
 
@@ -18,6 +19,7 @@ public class SettingsManager extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LocaleHelper.loadLocale(this);
         ThemeHelper.loadTheme(this);
 
         super.onCreate(savedInstanceState);
