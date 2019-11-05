@@ -1,10 +1,9 @@
 package com.example.passkeeper.Main;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-
-import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.passkeeper.Application.AES;
 import com.example.passkeeper.Application.AppConstants;
@@ -14,6 +13,7 @@ import com.example.passkeeper.Main.CustomBox.CustomBoxListener;
 import com.example.passkeeper.Main.CustomDialog.CustomDialogController;
 import com.example.passkeeper.Main.CustomDialog.CustomDialogListener;
 import com.example.passkeeper.R;
+import com.example.passkeeper.Settings.SettingsManager;
 import com.example.passkeeper.UserAPI.UserCallback;
 import com.example.passkeeper.UserAPI.UserManager;
 import com.example.passkeeper.UserAPI.UserModel;
@@ -65,7 +65,7 @@ public class MainController implements MainListener, CustomBoxListener, CustomDi
                 updateRecord(model, null);
             }
         };
-        onShowDialogAdd(callback, null);
+        onShowDialogRecordAdd(callback, null);
     }
 
     @Override
@@ -77,7 +77,8 @@ public class MainController implements MainListener, CustomBoxListener, CustomDi
 
     @Override
     public void onClickOptionSettings() {
-
+        Intent intent = new Intent(manager, SettingsManager.class);
+        manager.startActivityForResult(intent, AppConstants.REQUEST_CODE_SETTINGS);
     }
 
     @Override
@@ -111,7 +112,7 @@ public class MainController implements MainListener, CustomBoxListener, CustomDi
                     record.optString(AppConstants.BASE_LOGIN),
                     record.optString(AppConstants.BASE_PASSWORD)
             );
-            onShowDialogAdd(callback, model);
+            onShowDialogRecordAdd(callback, model);
         }catch (Exception ignored) {
             Utilities.showMessage(manager, manager.getString(R.string.main_error_update_record));
         }
@@ -194,7 +195,7 @@ public class MainController implements MainListener, CustomBoxListener, CustomDi
         return model;
     }
 
-    private void onShowDialogAdd(final DialogCallback listener, RecordModel model) {
+    private void onShowDialogRecordAdd(final DialogCallback listener, RecordModel model) {
         LayoutInflater inflater = manager.getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.layout_custom_dialog, null);
         final CustomDialogController dialogController = new CustomDialogController(dialogLayout, this);
@@ -207,7 +208,7 @@ public class MainController implements MainListener, CustomBoxListener, CustomDi
 
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(manager);
         dialogBuilder.setView(dialogController.getView());
-        dialogBuilder.setTitle(manager.getString(R.string.c_dialog_title));
+        dialogBuilder.setTitle(manager.getString(R.string.c_dialog_add_new_record));
         dialogBuilder.setNegativeButton(R.string.c_dialog_btn_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

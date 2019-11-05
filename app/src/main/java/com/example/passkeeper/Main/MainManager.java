@@ -1,14 +1,18 @@
 package com.example.passkeeper.Main;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.passkeeper.Application.AppConstants;
+import com.example.passkeeper.Application.LocaleHelper;
+import com.example.passkeeper.Application.ThemeHelper;
 import com.example.passkeeper.R;
 import com.example.passkeeper.UserAPI.UserManager;
 import com.example.passkeeper.UserAPI.UserModel;
@@ -19,6 +23,9 @@ public class MainManager extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LocaleHelper.loadLocale(this);
+        ThemeHelper.loadTheme(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_form);
         initToolbar();
@@ -47,5 +54,15 @@ public class MainManager extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         controller.onClickOptionMenu(item.getItemId());
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppConstants.REQUEST_CODE_SETTINGS) {
+            switch (resultCode) {
+                case RESULT_OK: recreate(); break;
+            }
+        }
     }
 }
