@@ -11,7 +11,6 @@ import com.example.passkeeper.Application.Utilities;
 import com.example.passkeeper.Main.CustomBox.CustomBoxAdapter;
 import com.example.passkeeper.Main.CustomBox.CustomBoxListener;
 import com.example.passkeeper.Main.CustomDialog.CustomDialogController;
-import com.example.passkeeper.Main.CustomDialog.CustomDialogListener;
 import com.example.passkeeper.R;
 import com.example.passkeeper.Settings.SettingsManager;
 import com.example.passkeeper.UserAPI.UserCallback;
@@ -24,7 +23,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MainController implements MainListener, CustomBoxListener, CustomDialogListener, UserCallback {
+public class MainController implements MainListener, CustomBoxListener, UserCallback {
     private UserModel userModel;
     private MainManager manager;
     private MainView view;
@@ -198,7 +197,7 @@ public class MainController implements MainListener, CustomBoxListener, CustomDi
     private void onShowDialogRecordAdd(final DialogCallback listener, RecordModel model) {
         LayoutInflater inflater = manager.getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.layout_custom_dialog, null);
-        final CustomDialogController dialogController = new CustomDialogController(dialogLayout, this);
+        final CustomDialogController dialogController = new CustomDialogController(dialogLayout);
 
         if (model != null) {
             dialogController.setTitle(model.getTitle());

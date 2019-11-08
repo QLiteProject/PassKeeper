@@ -20,6 +20,7 @@ import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 public class Utilities {
     public static void showMessage(Context context, String text) {
@@ -112,6 +113,17 @@ public class Utilities {
         return dateFormat.format(date);
     }
 
+    public static String getRandomPassword(int minLength, int maxLength) {
+        String value = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz|!£$%&/=@#";
+        Random random = new Random();
+        int length = random.nextInt(maxLength) + minLength;
+        StringBuilder builder = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            builder.append(value.charAt(random.nextInt(value.length())));
+        }
+        return builder.toString();
+    }
+
     public static void doRestart(Context c) {
         try {
             if (c != null) {
@@ -142,7 +154,6 @@ public class Utilities {
             Log.e(AppConstants.SETTINGS_LOG_TAG, "Was not able to restart application");
         }
     }
-
 
     public static void onReload(Activity activity) {
         Intent intent = activity.getIntent();

@@ -2,14 +2,31 @@ package com.example.passkeeper.Main.CustomDialog;
 
 import android.view.View;
 
-public class CustomDialogController implements CustomDialogListener{
-    private final CustomDialogView view;
-    private final CustomDialogListener listener;
+import com.example.passkeeper.Application.Utilities;
 
-    public CustomDialogController(View view, CustomDialogListener listener) {
+import io.bloco.faker.Faker;
+
+public class CustomDialogController implements CustomDialogListener{
+    private final Faker faker = new Faker();
+    private final CustomDialogView view;
+
+    public CustomDialogController(View view) {
         this.view = new CustomDialogView(view, this);
-        this.listener = listener;
     }
+
+    //region events
+    @Override
+    public void onClickGenerateLogin() {
+        String username = faker.internet.userName();
+        view.setLoginText(username);
+    }
+
+    @Override
+    public void onClickGeneratePassword() {
+        String password = Utilities.getRandomPassword(8, 16);
+        view.setPasswordText(password);
+    }
+    //endregion
 
     //region get/set
     public View getView() {

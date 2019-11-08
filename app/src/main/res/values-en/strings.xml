@@ -26,7 +26,7 @@
     <string name="reg_error_password_fields">Error: Password does not match</string>
     <string name="reg_error_agreement_canceled">You cannot register until you accept the terms of the license agreement</string>
     <string name="reg_error_critical">A critical error has occurred, please repeat the procedure later</string>
-    <string name="license_info_msg_license">The program is designed for personal use for research purposes</string>
+    <string name="license_info_msg_license">"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.  "</string>
     <string name="license_info_dbtn_accept">Accept</string>
     <string name="license_info_dbtn_cancel">Cancel</string>
     <string name="license_info_title_agreement">License agreement</string>

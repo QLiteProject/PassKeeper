@@ -20,6 +20,7 @@ public class CustomDialogView{
         this.listener = listener;
         this.view = view;
         initComponents(view);
+        initEvents();
     }
 
     private void initComponents(View view) {
@@ -29,6 +30,21 @@ public class CustomDialogView{
         editTextTitle = (EditText) txtInTitle.getEditText();
         editTextLogin = (EditText) txtInLogin.getEditText();
         editTextPassword = (EditText) txtInPassword.getEditText();
+    }
+
+    private void initEvents() {
+        txtInLogin.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickGenerateLogin();
+            }
+        });
+        txtInPassword.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickGeneratePassword();
+            }
+        });
     }
 
     //region get/set
