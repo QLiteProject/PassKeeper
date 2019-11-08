@@ -64,6 +64,7 @@
     <string name="main_menu_hint_settings">App settings</string>
     <string name="main_menu_hint_add_record">Add record</string>
     <string name="main_menu_hint_upload">Upload record</string>
+    <string name="main_menu_hint_download">Download records</string>
     <string name="set_language">The current language of the application:</string>
     <string name="set_enabled_dark_mode">To enable the dark theme</string>
     <string-array name="language_option">

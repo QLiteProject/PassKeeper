@@ -39,7 +39,8 @@
     <string name="main_hint_btn_add">Добавить</string>
     <string name="main_menu_hint_add_record">Добавить запись</string>
     <string name="main_menu_hint_settings">Настройки приложения</string>
-    <string name="main_menu_hint_upload">Загрузка базы данных</string>
+    <string name="main_menu_hint_upload">Загрузка базы данных на устройсво</string>
+    <string name="main_menu_hint_download">Загрузка базы данных на сервер</string>
     <string name="main_msg_ok_synchronized">Синхронизация завершена</string>
     <string name="main_msg_synchronized_process">Идёт синхронизация</string>
     <string name="n_user_btn_finish">Финиш</string>

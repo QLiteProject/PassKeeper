@@ -1,6 +1,5 @@
 package com.example.passkeeper.Main;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -70,9 +69,15 @@ public class MainController implements MainListener, CustomBoxListener, UserCall
     }
 
     @Override
-    public void onClickOptionSynchronization() {
+    public void onClickOptionUpload() {
         String data = Utilities.getFileText(userModel.getBase());
         UserManager.setUserBase(userModel.getUsername(), userModel.getPassword(), data);
+        Utilities.showMessage(manager, manager.getString(R.string.main_msg_synchronized_process));
+    }
+
+    @Override
+    public void onClickOptionDownload() {
+        UserManager.getUserBase(userModel.getUsername(), userModel.getPassword());
         Utilities.showMessage(manager, manager.getString(R.string.main_msg_synchronized_process));
     }
 
@@ -126,19 +131,16 @@ public class MainController implements MainListener, CustomBoxListener, UserCall
                 onClickOptionSettings();
                 break;
             case R.id.action_upload:
-                onClickOptionSynchronization();
+                onClickOptionUpload();
+                break;
+            case R.id.action_download:
+                onClickOptionDownload();
                 break;
         }
     }
 
     public void onBack(int requestCode, int resultCode, Intent data) {
-        if (requestCode == AppConstants.REQUEST_CODE_SETTINGS) {
-            switch (resultCode) {
-                case Activity.RESULT_OK:
-                    manager.recreate();
-                    break;
-            }
-        }
+        manager.recreate();
     }
 
     //endregion
@@ -160,12 +162,27 @@ public class MainController implements MainListener, CustomBoxListener, UserCall
     private void updateResources() {
         try {
             base.getJSONObject(AppConstants.BASE).put(AppConstants.BASE_RECORDS, records);
-            String encrypt = AES.encrypt(base.toString(), userModel.getSecretKey());
-            if (!Utilities.setFileText(userModel.getBase(), encrypt)) {
+            String dataEncrypt = AES.encrypt(base.toString(), userModel.getSecretKey());
+            if (!Utilities.setFileText(userModel.getBase(), dataEncrypt)) {
                 Utilities.showMessage(manager, manager.getString(R.string.main_error_update_local_base));
             }
         }catch (Exception ignored) {
             Utilities.showMessage(manager, manager.getString(R.string.main_error_base));
+        }
+    }
+
+    private void getResourcesProcess(byte[] body) {
+        try {
+            JSONObject data = new JSONObject(new String(body));
+            String dataEncrypt = data.get(AppConstants.BASE).toString();
+            if (userModel.getSecretKey() == null | AES.decrypt(dataEncrypt, userModel.getSecretKey()) == null) {
+                Utilities.showMessage(manager, manager.getString(R.string.auth_error_decrypt_base));
+            }else {
+                Utilities.setFileText(userModel.getBase(), dataEncrypt);
+                manager.recreate();
+            }
+        }catch (Exception ignored) {
+            Utilities.showMessage(manager, manager.getString(R.string.app_error_fatal));
         }
     }
 
@@ -244,8 +261,13 @@ public class MainController implements MainListener, CustomBoxListener, UserCall
 
     @Override
     public void onSuccessRequest(UserManager.UserEvent userEvent, byte[] body) {
-        if (userEvent == UserManager.UserEvent.SET_RESOURCES) {
-            Utilities.showMessage(manager, manager.getString(R.string.main_msg_ok_synchronized));
+        switch (userEvent) {
+            case SET_RESOURCES:
+                Utilities.showMessage(manager, manager.getString(R.string.main_msg_ok_synchronized));
+                break;
+            case GET_RESOURCES:
+                getResourcesProcess(body);
+                break;
         }
     }
 
