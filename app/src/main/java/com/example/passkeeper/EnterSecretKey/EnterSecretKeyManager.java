@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.passkeeper.Application.ThemeHelper;
-import com.example.passkeeper.GenSecretKey.GenSecretKeyView;
 import com.example.passkeeper.R;
 
 public class EnterSecretKeyManager extends AppCompatActivity {

@@ -33,13 +33,20 @@
                 android:layout_marginBottom="4dp"
                 tools:ignore="HardcodedText" />
 
-            <Switch
-                android:id="@+id/switch_setTheme"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:text="@string/set_enabled_dark_mode" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingStart="8dp"
+                tools:ignore="RtlSymmetry">
+
+                <Switch
+                    android:id="@+id/switch_setTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/set_enabled_dark_mode" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

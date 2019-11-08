@@ -86,7 +86,7 @@ public class UserManager {
         GET_RESOURCES("/user/get_resources/"),
         SET_RESOURCES("/user/set_resources/");
 
-        protected String event;
+        private String event;
 
         UserEvent (String event) {
             this.event = event;

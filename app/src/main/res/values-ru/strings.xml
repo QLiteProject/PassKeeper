@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">PassKeeper</string>
     <string name="app_error_fatal">Критическая ошибка. Пожалуйста, повторите последние шаги еще раз</string>
     <string name="auth_btn_sig_in">Вход</string>
     <string name="auth_btn_sig_up">Регистрация</string>
@@ -16,7 +15,7 @@
     <string name="auth_hint_password">Пароль</string>
     <string name="auth_hint_username">Имя пользователя</string>
     <string name="auth_login_process">Дождитесь авторизации в приложении</string>
-    <string name="c_dialog_add_new_record">Добавление новой записи:</string>
+    <string name="c_dialog_add_new_record">Добавление новой записи</string>
     <string name="c_dialog_btn_add_record">Добавить</string>
     <string name="c_dialog_btn_cancel">Отмена</string>
     <string name="c_dialog_btn_delete">Удалить</string>
@@ -41,8 +40,8 @@
     <string name="main_menu_hint_add_record">Добавить запись</string>
     <string name="main_menu_hint_settings">Настройки приложения</string>
     <string name="main_menu_hint_upload">Загрузка базы данных</string>
-    <string name="main_msg_ok_synchronized">Данные пользователя синхронизированны</string>
-    <string name="main_msg_synchronized_process">Идет синхронизация</string>
+    <string name="main_msg_ok_synchronized">Синхронизация завершена</string>
+    <string name="main_msg_synchronized_process">Идёт синхронизация</string>
     <string name="n_user_btn_finish">Финиш</string>
     <string name="n_user_dbtn_cancel">Отмена</string>
     <string name="n_user_dbtn_next">Далее</string>
@@ -58,7 +57,7 @@
     <string name="n_user_welcome">Добро пожаловать</string>
     <string name="reg_btn_back">Назад</string>
     <string name="reg_btn_next">Далее</string>
-    <string name="reg_chbox_license">Я согласен с Лицензионным соглашением</string>
+    <string name="reg_chbox_license">Я согласен с лицензионным соглашением</string>
     <string name="reg_error_agreement_canceled">Вы не можете зарегистрироваться, пока не примете условия лицензионного соглашения</string>
     <string name="reg_error_critical">Произошла критическая ошибка, повторите процедуру позже</string>
     <string name="reg_error_fields">Ошибка: не менее 4 символов</string>
@@ -69,4 +68,5 @@
     <string name="reg_txt_required_fields">* Обязательно для заполнения</string>
     <string name="set_language">Текущий язык приложения:</string>
     <string name="set_enabled_dark_mode">Включить тёмную тему</string>
+    <string name="app_name">Менеджер паролей</string>
 </resources>

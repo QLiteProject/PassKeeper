@@ -19,11 +19,10 @@ public class AppConstants {
     public static final String BASE_LOGIN = "login";
     public static final String BASE_PASSWORD = "password";
     public static final String APP_FOLDER =  ROOT_PATH + File.separator + ".PassKeeper";
+
     public static final String AUTO_GEN_TAG = "auto_gen";
     public static final String ENTER_KEY_TAG = "enter_key";
-    public static final String SETTINGS_LOG_TAG = "settings";
-    public static final String SETTINGS_THEME = "settings_theme";
-    public static final String SETTINGS_LANG = "settings_lang";
+
     public static final int MIN_LENGTH_FIELDS = 4;
     public static final int SECRET_BYTE = 8;
 

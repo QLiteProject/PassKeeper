@@ -1,5 +1,6 @@
 package com.example.passkeeper.Main;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import com.example.passkeeper.Application.AppConstants;
 import com.example.passkeeper.Application.Utilities;
 import com.example.passkeeper.Main.CustomBox.CustomBoxAdapter;
 import com.example.passkeeper.Main.CustomBox.CustomBoxListener;
+import com.example.passkeeper.Main.CustomBox.RecordModel;
 import com.example.passkeeper.Main.CustomDialog.CustomDialogController;
 import com.example.passkeeper.R;
 import com.example.passkeeper.Settings.SettingsManager;
@@ -128,6 +130,17 @@ public class MainController implements MainListener, CustomBoxListener, UserCall
                 break;
         }
     }
+
+    public void onBack(int requestCode, int resultCode, Intent data) {
+        if (requestCode == AppConstants.REQUEST_CODE_SETTINGS) {
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    manager.recreate();
+                    break;
+            }
+        }
+    }
+
     //endregion
 
     //region logic

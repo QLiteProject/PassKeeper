@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.passkeeper.Main.RecordModel;
 import com.example.passkeeper.R;
 
 import java.util.ArrayList;

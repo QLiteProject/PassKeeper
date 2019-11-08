@@ -7,41 +7,94 @@ import com.example.passkeeper.R;
 
 public class ThemeHelper {
     private final static String THEME_PREF = "Theme";
-    public final static int DEFAULT_THEME = 0;
-    public final static int THEME_LIGHT = 1;
+    private static Themes SWITCHES_THEME = null;
 
     public static void loadTheme(Activity activity) {
         SharedPreferences prefs = activity.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
-        int theme = prefs.getInt(THEME_PREF, DEFAULT_THEME);
-        setThemeActivity(activity, theme);
+        int idTheme = prefs.getInt(THEME_PREF, Themes.DARK.getTheme());
+        Themes theme = Themes.fromInt(idTheme);
+        setThemeActivity(activity, getLoadTheme(theme));
     }
 
-    public static void changeTheme(Activity activity, int theme) {
-        saveTheme(activity, theme);
-        activity.recreate();
+    private static Themes getLoadTheme(Themes theme) {
+        if (SWITCHES_THEME != null) {
+            return SWITCHES_THEME;
+        }else {
+            return theme;
+        }
     }
 
-    public static void saveTheme(Activity activity, int theme) {
+    public static void changeTheme(Activity activity) {
+        if (SWITCHES_THEME != null && SWITCHES_THEME != getCurrentTheme(activity)) {
+            saveTheme(activity, SWITCHES_THEME);
+            SWITCHES_THEME = null;
+        }
+    }
+
+    public static void changeTheme(Activity activity, Themes theme) {
+        if (theme != null && theme != getCurrentTheme(activity)) {
+            saveTheme(activity, theme);
+            SWITCHES_THEME = null;
+        }
+    }
+
+    public static void switchTheme(Activity activity, Themes theme) {
+        if (SWITCHES_THEME != theme) {
+            SWITCHES_THEME = theme;
+            activity.recreate();
+        }
+    }
+
+    public static void saveTheme(Activity activity, Themes theme) {
         SharedPreferences prefs = activity.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(THEME_PREF, theme);
+        editor.putInt(THEME_PREF, theme.getTheme());
         editor.apply();
     }
 
-    public static int getCurrentTheme(Activity activity) {
+    public static Themes getCurrentTheme(Activity activity) {
         SharedPreferences prefs = activity.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
-        return prefs.getInt(THEME_PREF, DEFAULT_THEME);
+        int idTheme =  prefs.getInt(THEME_PREF, Themes.DARK.getTheme());
+        return Themes.fromInt(idTheme);
     }
 
-    private static void setThemeActivity(Activity activity, int theme) {
+    public static void resetSwitchesTheme() {
+        SWITCHES_THEME = null;
+    }
+
+    private static void setThemeActivity(Activity activity, Themes theme) {
         switch (theme) {
             default:
-            case DEFAULT_THEME:
+            case DARK:
                 activity.setTheme(R.style.PassKeeperDark);
                 break;
-            case THEME_LIGHT:
+            case LIGHT:
                 activity.setTheme(R.style.PassKeeperLight);
                 break;
+        }
+    }
+
+    public enum Themes {
+        DARK(0),
+        LIGHT(1);
+
+        private int theme;
+
+        Themes (int theme) {
+            this.theme = theme;
+        }
+
+        public int getTheme() {
+            return theme;
+        }
+
+        public static Themes fromInt(int id) {
+            for (Themes t : Themes.values()) {
+                if (t.theme == id) {
+                    return t;
+                }
+            }
+            return null;
         }
     }
 }

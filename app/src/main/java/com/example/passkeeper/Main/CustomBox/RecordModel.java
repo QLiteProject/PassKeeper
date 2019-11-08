@@ -1,4 +1,4 @@
-package com.example.passkeeper.Main;
+package com.example.passkeeper.Main.CustomBox;
 
 public class RecordModel {
     private String title;

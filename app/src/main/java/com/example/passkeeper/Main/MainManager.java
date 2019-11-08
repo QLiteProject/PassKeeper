@@ -58,11 +58,7 @@ public class MainManager extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        controller.onBack(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AppConstants.REQUEST_CODE_SETTINGS) {
-            switch (resultCode) {
-                case RESULT_OK: recreate(); break;
-            }
-        }
     }
 }

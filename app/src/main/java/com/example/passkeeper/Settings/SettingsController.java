@@ -3,10 +3,8 @@ package com.example.passkeeper.Settings;
 import android.app.Activity;
 import android.widget.ArrayAdapter;
 
-import com.example.passkeeper.Application.AppConstants;
 import com.example.passkeeper.Application.LocaleHelper;
 import com.example.passkeeper.Application.ThemeHelper;
-import com.example.passkeeper.Application.Utilities;
 import com.example.passkeeper.R;
 
 public class SettingsController implements SettingsListener{
@@ -37,17 +35,18 @@ public class SettingsController implements SettingsListener{
 
     @Override
     public void onChangeTheme(boolean state) {
-        int theme = state ? ThemeHelper.DEFAULT_THEME : ThemeHelper.THEME_LIGHT;
-        ThemeHelper.changeTheme(manager, theme);
+        ThemeHelper.Themes theme = state ? ThemeHelper.Themes.DARK : ThemeHelper.Themes.LIGHT;
+        ThemeHelper.switchTheme(manager, theme);
     }
 
     private void onClickHome() {
+        ThemeHelper.resetSwitchesTheme();
         manager.finish();
     }
 
     private void onClickSave() {
         saveChangeLanguage(view.getSpinnerItemPosition());
-//        Utilities.onReload(manager);
+        ThemeHelper.changeTheme(manager);
         manager.setResult(Activity.RESULT_OK);
         manager.finish();
     }
@@ -58,36 +57,39 @@ public class SettingsController implements SettingsListener{
         ArrayAdapter<String> optionsList = new ArrayAdapter<String>(manager, android.R.layout.simple_spinner_dropdown_item, manager.getResources().getStringArray(R.array.language_option));
         view.setSpinnerLanguageAdapter(optionsList);
         view.setSelectedItem(getCurrentLanguagePosition());
-        view.setSwitchChecked(ThemeHelper.getCurrentTheme(manager) == 0);
+        view.setSwitchChecked(getCurrentThemePosition());
     }
 
     private void saveChangeLanguage(int position) {
-        String locale;
         switch (position) {
             default:
             case 0:
-                locale = "eu";
+                LocaleHelper.changeLang(manager, LocaleHelper.Locales.ENGLISH);
                 break;
             case 1:
-                locale = "ru";
+                LocaleHelper.changeLang(manager, LocaleHelper.Locales.RUSSIAN);
                 break;
         }
-        LocaleHelper.changeLang(manager, locale);
+    }
+
+    private boolean getCurrentThemePosition() {
+        switch (ThemeHelper.getCurrentTheme(manager)) {
+            default:
+            case DARK:
+                return true;
+            case LIGHT:
+                return false;
+        }
     }
 
     private int getCurrentLanguagePosition() {
-        String lang = LocaleHelper.getCurrentLang(manager);
-        int position;
-        switch (lang) {
+        switch (LocaleHelper.getCurrentLocale(manager)) {
             default:
-            case "eu":
-                position = 0;
-                break;
-            case "ru":
-                position = 1;
-                break;
+            case ENGLISH:
+                return 0;
+            case RUSSIAN:
+                return 1;
         }
-        return position;
     }
     //endregion
 }
