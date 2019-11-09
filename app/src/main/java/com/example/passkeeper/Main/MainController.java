@@ -179,6 +179,7 @@ public class MainController implements MainListener, CustomBoxListener, UserCall
                 Utilities.showMessage(manager, manager.getString(R.string.auth_error_decrypt_base));
             }else {
                 Utilities.setFileText(userModel.getBase(), dataEncrypt);
+                Utilities.showMessage(manager, manager.getString(R.string.main_msg_ok_synchronized));
                 manager.recreate();
             }
         }catch (Exception ignored) {
