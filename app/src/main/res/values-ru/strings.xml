@@ -15,7 +15,7 @@
     <string name="auth_hint_password">Пароль</string>
     <string name="auth_hint_username">Имя пользователя</string>
     <string name="auth_login_process">Дождитесь авторизации в приложении</string>
-    <string name="c_dialog_add_new_record">Добавление новой записи</string>
+    <string name="c_dialog_record_editor">Редактор</string>
     <string name="c_dialog_btn_add_record">Добавить</string>
     <string name="c_dialog_btn_cancel">Отмена</string>
     <string name="c_dialog_btn_delete">Удалить</string>

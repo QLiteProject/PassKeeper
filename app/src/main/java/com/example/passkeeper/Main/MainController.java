@@ -238,7 +238,7 @@ public class MainController implements MainListener, CustomBoxListener, UserCall
 
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(manager);
         dialogBuilder.setView(dialogController.getView());
-        dialogBuilder.setTitle(manager.getString(R.string.c_dialog_add_new_record));
+        dialogBuilder.setTitle(manager.getString(R.string.c_dialog_record_editor));
         dialogBuilder.setNegativeButton(R.string.c_dialog_btn_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

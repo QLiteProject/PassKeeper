@@ -53,7 +53,7 @@
     <string name="main_error_generate_list">Critical error: failed to generate list</string>
     <string name="main_msg_ok_synchronized">Synchronization is complete</string>
     <string name="main_msg_synchronized_process">Synchronization is in progress</string>
-    <string name="c_dialog_add_new_record">Adding a new record</string>
+    <string name="c_dialog_record_editor">Editor</string>
     <string name="c_dialog_login">Username/Login *</string>
     <string name="c_dialog_password">Password *</string>
     <string name="c_dialog_btn_add_record">Add</string>
